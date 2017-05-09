@@ -28,7 +28,6 @@ class CLI
       puts "Invalid input. Please try again."
       load_or_create_trainer
     end
-    #if load then @user = picked user else @user = user.new
   end
 
   def create_trainer
@@ -72,7 +71,7 @@ class CLI
     when "2"
       switch_pkmn(opponent_pokemon)
     when "3"
-      throw_pokeball(user, opponent_pokemon)
+      throw_pokeball(poke_battle)
     when "4"
       puts "You've run away"
       main_options
@@ -80,7 +79,40 @@ class CLI
       battle(user_pokemon, opponent_pokemon)
     end
 
+  end
 
+  def switch_pkmn(opponent_pokemon)
+    puts "Choose the pokemon you want to use."
+    available_pkmn = @user.available_pkmn# gets pokemon names @user.pokemon.reject {|pokemon| pokemon.fainted} #need to have a fainted status for each pokemon and put into User class?
+    available_pkmn.each_with_index {|pokemon, index| puts "#{index + 1}. #{pokemon.name}"}
+    pkmn_choice = gets.chomp.to_i
+    if pkmn_choice > 0 && pkmn_choice <= available_pkmn.size
+      pkmn_name = available_pkmn[pkmn_choice - 1]
+      user_pokemon = Pokemon.find_by_name(pkmn_name) # can get pokemon from user???
+      battle(user_pokemon, opponent_pokemon)
+    else
+      puts "Invalid choice. Please select a pokemon."
+      switch_pkmn(opponent_pokemon)
+    end
+  end
+
+  def throw_pokeball(battle)
+    if battle.capture
+      puts "Congrats! You've captured #{opponent_pokemon.name}."
+      captured_pokemon
+    else
+      puts "#{opponent_pokemon.name} was too strong to be captured. Try to lower its HP a little more."
+      battle(battle.user_pokemon, battle.opponent_pokemon)
+    end
+  end
+
+  def captured_pokemon
+    if #too many pokemon
+      #then drop one
+
+    else
+      #add pokemon to lineup
+    end
   end
 
 

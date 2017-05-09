@@ -1,5 +1,17 @@
-class Pokemon < ActiveRecord::Base
+class Trainer < ActiveRecord::Base
   has_many :pokemons
 
-  # Initializes with three pokemon and 100 pokeballs
+  attr_accessor :name, :pokeballs
+
+  def initialize(opt = {})
+    :name = opt[:name]
+    :pokeballs = 100
+  end
+
+  def create_starters
+    self.pokemons << Pokemon.create_from_number(1)
+    self.pokemons << Pokemon.create_from_number(4)
+    self.pokemons << Pokemon.create_from_number(7)
+  end
+
 end

@@ -5,6 +5,14 @@ class Pokemon < ActiveRecord::Base
   has_many :pokemon_evolutions
   has_many :evolutions, through: :pokemon_evolutions
 
+  def self.create_from_number(number)
+    resp = Adapter.get_pokemon_by_number(number)
+    info = parse_info_from_api(resp)
+    info[:level] = 5
+    level_to_exp(info)
+    self.create(info)
+  end
+
   def parse_info_from_api(resp)
     info = {}
     resp.each do |k, v|
@@ -31,4 +39,18 @@ class Pokemon < ActiveRecord::Base
       end
     end
     info
+  end
+
+  def level_to_exp(info)
+    n = info[:level]
+    case info[:growth_rate]
+    when "fast"
+      exp = (4 * n ** 3)/5
+    when "medium fast"
+      exp = n ** 3
+    when "medium slow"
+      exp = (6/5) * n ** 3 - 16 * n ** 2 + 100 * n - 140
+    when "slow"
+      exp = (5 * n ** 3) / 4
+    end
   end

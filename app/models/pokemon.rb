@@ -10,8 +10,14 @@ class Pokemon < ActiveRecord::Base
     info = parse_info_from_api(resp)
     new_pokemon = self.new(info)
     new_pokemon.set_level_and_exp(5)
-    # new_pokemon.add_types(info)
+
+    # get and set types and evos
+    info = get_types_and_evos(resp)
+    new_pokemon.add_types(info)
+
+    # get and set evos
     # new_pokemon.add
+
     new_pokemon.save
     new_pokemon
   end
@@ -41,7 +47,8 @@ class Pokemon < ActiveRecord::Base
   end
 
   def add_types(info)
-    info[:types].each do |type|
+    info[:types].each do |type_name|
+      type = Type.find_or_create_by(name: type_name)
       self.types << type
     end
   end

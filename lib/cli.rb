@@ -105,20 +105,20 @@ class CLI
       battle(battle.user_pokemon, battle.opponent_pokemon)
     end
   end
-
-  def captured_pokemon
-    if #too many pokemon
-      #then drop one
-
-    else
-      #add pokemon to lineup
-    end
-  end
-
-
-  def change_lineup
-    @user.pokemons
-  end
-
+  #
+  # def captured_pokemon
+  #   if #too many pokemon
+  #     #then drop one
+  #
+  #   else
+  #     #add pokemon to lineup
+  #   end
+  # end
+  #
+  #
+  # def change_lineup
+  #   @user.pokemons
+  # end
+  #
 
 end

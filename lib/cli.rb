@@ -53,6 +53,7 @@ class CLI
     end
   end
 
+
   def start_battle
     #generate pokemon = Adapter.getRandomPokemon
     #battle = BattlePokemon.new(@user, pokemon)
@@ -63,10 +64,8 @@ class CLI
   def play_first_turn(battle)
     message = battle.first_turn
     case message
-    when -1
-      #error
     when 1
-      #user turn to attack or switch
+      battle_pokemon()
     when 2
       #user turn to switch pokemon since current fainted
 

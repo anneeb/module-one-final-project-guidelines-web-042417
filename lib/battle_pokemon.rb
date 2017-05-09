@@ -13,10 +13,11 @@ class BattlePokemon
 
     #pokemon attack each other unless one of them faints
     if @user_first_attker
-      #user_pokemon attacks opponent pokemon
-      #opponent attacks user
+      user_attacks
+      opponent_attacks
     else
-      #vice versa
+      opponent_attacks
+      user_attacks
     end
 
   end

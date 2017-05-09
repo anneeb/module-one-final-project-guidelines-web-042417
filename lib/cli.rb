@@ -34,7 +34,7 @@ class CLI
   def create_trainer
     puts "What would you like your trainer's name to be?"
     name = gets.chomp
-    Trainer.create(name)
+    Trainer.create(name: name)
   end
 
   def main_options
@@ -53,18 +53,15 @@ class CLI
     end
   end
 
-
-  def choose_action_group
-    #1. Battle next opponent/trainer?
-    #2. Battle pokemon/train/try to capture
-    #3. Change LineUp
-
+  def battle
+    #generate pokemon
+    #
   end
 
 
   ## battle_trainer
 
-  def battle_trainer
+  ##def battle_trainer
     #opposing_trainer = Opponent.new
     #battle_with_trainer = BattleTrainer.new(opponent_trainer)
     #Battle
@@ -75,16 +72,16 @@ class CLI
   end
 
   #battle_wild_pokemon
-  def battle_wild_pokemon
+  #def battle_wild_pokemon
     #opponent_pokemon = Pokemon.new
     #battle_with_pokemon = BattlPokemon.new(@user, opponent_pokemon)
-    while battle_with_pokemon.battle_ongoing
-      user_choice = gets.chomp
-      battle_with_pokemon.play_turn(user_choice)
+    ###while battle_with_pokemon.battle_ongoing
+      ##user_choice = gets.chomp
+      ##battle_with_pokemon.play_turn(user_choice)
     #1. pick move
     #2. pick pokemon
     #3. use pokeball
-  end
+  ##end
 
   #change lineup
   def change_lineup

@@ -141,12 +141,7 @@ class CLI
   end
 
   def captured_pokemon
-    if #too many pokemon
-      #then drop one
 
-    else
-      #add pokemon to lineup
-    end
   end
 
 

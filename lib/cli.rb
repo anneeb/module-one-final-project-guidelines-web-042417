@@ -53,56 +53,37 @@ class CLI
     end
   end
 
+  def battle(user_pokemon = nil, opponent_pokemon = nil)
+    opponent_pokemon |= Adapter.get_random_pokemon
+    user_pokemon |= @user.pokemon.first_not_fainted
+    puts "What would you like to do"
+    puts "1. Attack #{opponent_pokemon.name}"
+    puts "2. Switch to a different pokemon"
+    puts "3. Try to catch pokemon"
+    puts "4. Run away"
 
-  def start_battle
-    #generate pokemon = Adapter.getRandomPokemon
-    #battle = BattlePokemon.new(@user, pokemon)
-    puts "You are now battle #{pokemon.name}"
-    play_first_turn(battle)
-  end
+    user_choice = gets.chomp
 
-  def play_first_turn(battle)
-    message = battle.first_turn
-    case message
-    when 1
-      battle_pokemon()
-    when 2
-      #user turn to switch pokemon since current fainted
-
+    case user_choice
+    when "1"
+      poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon)
+      poke_battle.play_turn
+      battle(user_pokemon, opponent_pokemon)
+    when "2"
+      switch_pkmn(opponent_pokemon)
+    when "3"
+      throw_pokeball(user, opponent_pokemon)
+    when "4"
+      puts "You've run away"
+      main_options
+    else
+      battle(user_pokemon, opponent_pokemon)
     end
 
-  end
-
-  def battle_pokemon(battle)
 
   end
 
 
-  ## battle_trainer
-
-  ##def battle_trainer
-    #opposing_trainer = Opponent.new
-    #battle_with_trainer = BattleTrainer.new(opponent_trainer)
-    #Battle
-    ##find a trainer/populate with pokemon --- Pokemon.create_at_random(MyPokemon.avg_lvl)
-    #1. pick move
-    #2. pick another pokemon
-
-  end
-
-  #battle_wild_pokemon
-  #def battle_wild_pokemon
-    #opponent_pokemon = Pokemon.new
-    #battle_with_pokemon = BattlPokemon.new(@user, opponent_pokemon)
-    ###while battle_with_pokemon.battle_ongoing
-      ##user_choice = gets.chomp
-      ##battle_with_pokemon.play_turn(user_choice)
-    #1. pick move
-    #2. pick pokemon
-    #3. use pokeball
-  ##end
-
-  #change lineup
   def change_lineup
     #
   end

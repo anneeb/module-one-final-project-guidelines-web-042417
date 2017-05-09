@@ -1,9 +1,8 @@
 class CreateEvolutions < ActiveRecord::Migration
   def change
     create_table :evolutions do |t|
-      t.string :starting_pokemon_id
       t.integer :level
-      t.string :new_pokemon_id
+      t.integer :new_pokemon_number
     end
   end
 end

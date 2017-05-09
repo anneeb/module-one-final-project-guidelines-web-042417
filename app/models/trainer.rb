@@ -7,4 +7,10 @@ class Trainer < ActiveRecord::Base
     self.pokemons << Pokemon.create_from_number_and_level(number: 7, level: 5)
   end
 
+  def list_pokemons
+    self.pokemons.map do |pokemon|
+      pokemon.name
+    end
+  end
+  
 end

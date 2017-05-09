@@ -33,7 +33,9 @@ class CLI
   def create_trainer
     puts "What would you like your trainer's name to be?"
     name = gets.chomp
-    Trainer.create(name: name)
+    new_trainer = Trainer.create(name: name)
+    new_trainer.create_starters
+    new_trainer
   end
 
   def main_options

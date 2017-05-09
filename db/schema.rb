@@ -13,14 +13,13 @@
 ActiveRecord::Schema.define(version: 6) do
 
   create_table "evolutions", force: :cascade do |t|
-    t.string  "starting_pokemon_id"
     t.integer "level"
-    t.string  "new_pokemon_id"
+    t.integer "new_pokemon_number"
   end
 
   create_table "pokemon_evolutions", force: :cascade do |t|
-    t.integer "pokemon_id_id"
-    t.integer "evolution_id_id"
+    t.integer "pokemon_id"
+    t.integer "evolution_id"
   end
 
   create_table "pokemon_types", force: :cascade do |t|
@@ -41,6 +40,7 @@ ActiveRecord::Schema.define(version: 6) do
     t.integer "special_attack"
     t.integer "special_defense"
     t.integer "speed"
+    t.integer "trainer_id"
   end
 
   create_table "trainers", force: :cascade do |t|

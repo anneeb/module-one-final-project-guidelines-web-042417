@@ -6,35 +6,29 @@ class Pokemon < ActiveRecord::Base
   has_many :evolutions, through: :pokemon_evolutions
 
   def parse_info_from_api(resp)
-    info = {
-      name: resp["name"]
-      pokemon_number: resp["pkdx_id"]
-      types: resp["types"]
-      catch_rate: resp["catch_rate"]
-      types: []
-
-      hp: resp["hp"]
-      attack: resp["attack"]
-      defense: resp["defense"]
-      special_attack: resp["sp_atk"]
-      special_defense: resp["sp_def"]
-
-      growth_rate: resp["growth_rate"]
-      evolutions: {}
-      speed: resp["speed"]
-      weight: resp["weight"]
-    }
-
-    resp["evolutions"].each do |evo|
-      info[:evolutions][evo["level"]] = evo["resource_uri"] if evo["method"] == "level_up"
-    end
-
-    resp["types"].each do |type|
-      info[:types] << type["name"]
+    info = {}
+    resp.each do |k, v|
+      case k
+      when "name" || "types" || "hp" || "catch_rate" || "attack" || "defense" || "growth_rate" || "speed" || "weight"
+        info[k.to_sym] = v
+      when "pkdx_id"
+        info[:pokemon_number] = v
+      when "sp_atk"
+        info[:special_attack] = v
+      when "sp_def"
+        info[:special_defense] = v
+      when "evolutions"
+        v.each do |evo|
+          info[:evolutions][evo["level"]] = evo["resource_uri"] if evo["method"] == "level_up"
+        end
+      when "types"
+        if info[:types]
+          info[:types] << type["name"]
+        else
+          info[:types] = []
+          info[:types] << type["name"]
+        end
+      end
     end
     info
   end
-
-  def
-
-end

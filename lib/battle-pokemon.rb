@@ -18,29 +18,15 @@ class BattlePokemon
     self
   end
 
-  def first_turn
-    if user_turn?
-      return 1
-    else
-      #opponent attacks user pokemon
-      #if user pkmn still alive then return 1 else return 2
-    end
-  end
-
   def play_turn(option)
 
-    #options can be 1. attack, 2. switch pokemon, 3. try to catch
-    case option
-    when "1"
-      #attack
-    when "2"
-      #switch
-    when "3"
-      #catch
-    else
-      -1
-    end
+    #if user_turn?
 
+    #if battle_over?
+    #  @battle_ongoing = false
+    #else
+    #  choose_next_attker
+    #end
   end
 
   def user_turn?

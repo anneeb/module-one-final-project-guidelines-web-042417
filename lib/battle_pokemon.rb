@@ -1,50 +1,34 @@
 class BattlePokemon
 
-  attr_accessor :current_attker, :users_chosen_pkmn
-  attr_reader :opponent_pokemon, :user, :battle_ongoing
+  attr_reader :opp_pkmn, :user, :battle_ongoing, :user_pkmn, :user_first_attker
 
-  def initialize(user, opponent_pokemon)
+  def initialize(user, user_pkmn opp_pkmn)
     @battle_ongoing = true
-    @user = user
-    @users_chosen_pkmn = users.first_pokemon ## questionable method
-    @opponent_pokemon = opponent_pokemon
+    @user, @user_pkmn, @opp_pkmn = user, user_pkmn, opp_pkmn
+    @user_first_attker = (@user_pkmn.speed >= opp_pkmn.speed) ? true : false
   end
 
 
-  def play_turn(option)
+  def play_turn
 
-    #options can be 1. attack, 2. switch pokemon, 3. try to catch
-    case option
-    when "1"
-      attack(@users_chosen_pkmn,@opponent_pokemon)
-    when "2"
-      switch_pkmn
-    when "3"
-      throw_pokeball
+    #pokemon attack each other unless one of them faints
+    if @user_first_attker
+      #user_pokemon attacks opponent pokemon
+      #opponent attacks user
     else
-      -1
+      #vice versa
     end
 
   end
 
-  def switch_pkmn
-    @user.pokemon.each_with_index {|pokemon, index| puts "#{index + 1}. #{pokemon.name}"}
-  end
 
-  def user_turn?
-    if @current_attker == users_chosen_pkmn
-      true
-    else
-      false
-    end
+  def user_attacks
+    
+    #caluculates dmg to opponent based on types
 
   end
 
-  def user_turn
-
-  end
-
-  def opponent_turn
+  def opponent_attacks
   end
 
 

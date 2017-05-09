@@ -33,7 +33,10 @@ class CLI
   def create_trainer
     puts "What would you like your trainer's name to be?"
     name = gets.chomp
-    Trainer.create(name: name)
+    new_trainer = Trainer.create(name: name)
+    new_trainer.create_starters
+    new_trainer
+
   end
 
   def main_options
@@ -43,9 +46,9 @@ class CLI
     input = gets.chomp
     case input
     when "1"
-      #go to battle
+      battle
     when "2"
-      #go to lineup
+      change_lineup
     else
       puts "Invalid input. Please try again"
       main_options
@@ -55,8 +58,18 @@ class CLI
   def battle(user_pokemon = nil, opponent_pokemon = nil)
     opponent_pokemon = opponent_pokemon
     user_pokemon = user_pokemon
-    opponent_pokemon |= Adapter.get_random_pokemon
-    user_pokemon |= @user.pokemon.first_not_fainted ##???
+    opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
+
+    #to be altered once better methods become available
+    poke_list = @user.list_pokemons
+    first_pkmn_name = poke_list.first
+    #binding.pry
+    first_pkmn = Pokemon.find_by_name(first_pkmn_name)
+    binding.pry
+    #user_pokemon |= first_pkmn #@user.pokemon.first_not_fainted ##???
+    user_pokemon  = first_pkmn unless user_pokemon
+    ####
+
     puts "What would you like to do"
     puts "1. Attack #{opponent_pokemon.name}"
     puts "2. Switch to a different pokemon"
@@ -67,11 +80,12 @@ class CLI
 
     case user_choice
     when "1"
-      poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon)
+      #poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon)
       #poke_battle.play_turn
       #choose attack
-      play_out_battle(poke_battle)
-      #battle(user_pokemon, opponent_pokemon)
+      #play_out_battle(poke_battle)
+      puts "You are trying to battle #{opponent_pokemon.name}. Keep on battling" ##edit so that it will work with BattlePokemon
+      battle(user_pokemon, opponent_pokemon)
     when "2"
       switch_pkmn(opponent_pokemon)
     when "3"

@@ -87,8 +87,8 @@ class CLI
 
   def play_out_battle(battle)
     puts "Which attack would you like to use?"
-    types = battle.get_user_types
-    types.each_with_index {|type, index| puts "#{index + 1}. #{type}"}
+    #types = battle.get_user_types ###will break at the moment
+    #types.each_with_index {|type, index| puts "#{index + 1}. #{type}"} ##will break at the moment
     #puts "#{types.size + 1}. Back to battle menu"
     user_type_choice = gets.chomp.to_i
 
@@ -103,8 +103,8 @@ class CLI
     #else
     # => play_out_battle(battle)
     #end
-    test_ongoing = false
-    if test_ongoing
+    test_over = false
+    if test_over
       play_out_battle
     else
       main_options

@@ -23,7 +23,7 @@ class BattlePokemon
 
 
   def user_attacks
-    
+
     #caluculates dmg to opponent based on types
 
   end

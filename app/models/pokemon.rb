@@ -5,22 +5,26 @@ class Pokemon < ActiveRecord::Base
   has_many :pokemon_evolutions
   has_many :evolutions, through: :pokemon_evolutions
 
+  def self.create_random_from_level(level:)
+    resp = Adapter.get_random_pokemon
+    info = parse_info(resp)
+    new_pokemon = self.new(info)
+    new_pokemon.set_level_and_exp(level)
+    parse = parse_types_and_evos(resp)
+    new_pokemon.add_types_from_parse(parse)
+    new_pokemon.add_evos_from_parse(parse)
+    new_pokemon.save
+    new_pokemon
+  end
+
   def self.create_from_number_and_level(number:, level:)
     resp = Adapter.get_pokemon_by_number(number)
     info = parse_info(resp)
     new_pokemon = self.new(info)
-
-    # set level and exp based on growth rate
     new_pokemon.set_level_and_exp(level)
-
-    # get and set types and evos
-    info = parse_types_and_evos(resp)
-    new_pokemon.add_types(info)
-    new_pokemon.add_evos(info)
-
-    # get and set evos
-    # new_pokemon.add
-
+    parse = parse_types_and_evos(resp)
+    new_pokemon.add_types_from_parse(parse)
+    new_pokemon.add_evos_from_parse(parse)
     new_pokemon.save
     new_pokemon
   end
@@ -30,15 +34,15 @@ class Pokemon < ActiveRecord::Base
     self.experience = level_to_exp(level)
   end
 
-  def add_types(info)
-    info[:types].each do |type_name|
+  def add_types_from_parse(hash)
+    hash[:types].each do |type_name|
       type = Type.find_or_create_by(name: type_name)
       self.types << type
     end
   end
 
-  def add_evos(info)
-    info[:evolutions].each do |k, v|
+  def add_evos_from_parse(hash)
+    hash[:evolutions].each do |k, v|
       level = k
       number = v.split("/").last.to_i
       self.evolutions << Evolution.create(level: level, new_pokemon_number: number)

@@ -1,7 +1,7 @@
 class CreateTypes < ActiveRecord::Migration
   def change
     create_table :types do |t|
-      t.text :name
+      t.string :name
     end
   end
 end

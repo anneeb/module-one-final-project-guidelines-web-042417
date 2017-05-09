@@ -46,7 +46,7 @@ class CLI
     when "1"
       #go to battle
     when "2"
-      #go to lineup
+      change_lineup
     else
       puts "Invalid input. Please try again"
       main_options
@@ -68,8 +68,8 @@ class CLI
     ##find a trainer/populate with pokemon --- Pokemon.create_at_random(MyPokemon.avg_lvl)
     #1. pick move
     #2. pick another pokemon
-
-  end
+  #
+  # end
 
   #battle_wild_pokemon
   #def battle_wild_pokemon
@@ -85,7 +85,7 @@ class CLI
 
   #change lineup
   def change_lineup
-    #
+    @user.pokemons
   end
 
 

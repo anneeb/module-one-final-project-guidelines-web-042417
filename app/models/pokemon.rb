@@ -101,10 +101,17 @@ class Pokemon < ActiveRecord::Base
     end
   end
 
+<<<<<<< HEAD
   def list_types
     self.types.map do |type|
       type.name
     end
+=======
+  def take_damage(dmg)
+    curr_hp = self.hp
+    new_hp = curr_hp - dmg
+    self.class.update(self.id, hp: new_hp)
+>>>>>>> damage
   end
 
   def next_evolution

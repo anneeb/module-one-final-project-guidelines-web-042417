@@ -123,18 +123,26 @@ class CLI
 
 
   def play_out_turn(user_pokemon, opponent_pokemon, poke_battle)
-    attack_types = choose_attack(user_pokemon, opponent_pokemon)
+
+
+    ##if battleing with different pokemon, create a new BattlePokemon instance, else use the same instance
     poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon) unless poke_battle
+
+
+    attack_types = choose_attack(user_pokemon, opponent_pokemon)
     poke_battle.set_atk_types(attack_types)
+
+    #use battle instance to play a battle turn
     battle_outcome = poke_battle.play_turn
+    #binding.pry
     case battle_outcome
-    when 1
+    when "Both Pokemon can still fight"
       battle(user_pokemon, opponent_pokemon, poke_battle)
-    when 2
+    when "You defeated the opponent"
       puts "You defeated #{opponent_pokemon.name}"
       main_options
-    when 3
-      puts "#{user_pkmn.name} fainted"
+    when "Your pokemon fainted"
+      puts "#{user_pokemon.name} fainted"
       auto_select_next_to_battle(opponent_pokemon)
     else
       puts "Error. Something went wrong"

@@ -16,7 +16,7 @@ class BattlePokemon
       user_attacks
 
       opponent_attacks unless opp_pkmn.hp == 0
-
+      #binding.pry
       #--------------------------------------------
       #outcome 1. continue as normal, both pkmn alive
       #outcome 2. opp pkmnn fainted
@@ -32,7 +32,7 @@ class BattlePokemon
     else
       opponent_attacks
       user_attacks unless user_pkmn.hp == 0
-
+      #binding.pry
       if opp_pkmn.hp == 0
         "You defeated the opponent"
       elsif user_pkmn.hp == 0
@@ -73,9 +73,7 @@ class BattlePokemon
   end
 
   def opponent_attacks
-    binding.pry
     puts "#{opp_pkmn.name} attacks #{user_pkmn.name} with #{@opp_atk_type.name} move"
-    #binding.pry
     dmg_calc = Damage.new(@opp_pkmn, @user_pkmn, @opp_atk_type)
     max_dmg_dealt = dmg_calc.damage.round(0)
 

@@ -180,9 +180,6 @@ class CLI
     end
   end
 
-  def captured_pokemon
-  end
-
   def view_or_edit_lineup
     display_lineup
     puts "Do you want to change your lineup?"

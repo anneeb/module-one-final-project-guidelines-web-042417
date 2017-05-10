@@ -16,29 +16,29 @@ class BattlePokemon
       user_attacks
 
       opponent_attacks unless opp_pkmn.hp == 0
-
+      #binding.pry
       #--------------------------------------------
       #outcome 1. continue as normal, both pkmn alive
       #outcome 2. opp pkmnn fainted
       #outsome 3. usr pkmn fainted
       if opp_pkmn.hp == 0
-        2
+        "You defeated the opponent"
       elsif user_pkmn.hp == 0
-        3
+        "Your pokemon fainted"
       else
-        1
+        "Both Pokemon can still fight"
       end
 
     else
       opponent_attacks
       user_attacks unless user_pkmn.hp == 0
-
+      #binding.pry
       if opp_pkmn.hp == 0
-        2
+        "You defeated the opponent"
       elsif user_pkmn.hp == 0
-        3
+        "Your pokemon fainted"
       else
-        1
+        "Both Pokemon can still fight"
       end
     end
 
@@ -66,16 +66,16 @@ class BattlePokemon
       puts "#{opp_pkmn.name} has #{opp_pkmn.hp} hp left"
     else
       puts "#{opp_pkmn.name} received #{opp_pkmn.hp} dmg and fainted"
-      opp_pkmn.take_damage(opp_pkmn.hp)
+      dmg_dealt = opp_pkmn.hp
+      opp_pkmn.take_damage(dmg_dealt)
       puts "#{opp_pkmn.name} has #{opp_pkmn.hp} hp left"
     end
 
   end
 
   def opponent_attacks
-    # binding.pry
+
     puts "#{opp_pkmn.name} attacks #{user_pkmn.name} with #{@opp_atk_type.name} move"
-    #binding.pry
     dmg_calc = Damage.new(@opp_pkmn, @user_pkmn, @opp_atk_type)
     max_dmg_dealt = dmg_calc.damage.round(0)
 
@@ -85,7 +85,8 @@ class BattlePokemon
       puts "#{user_pkmn.name} has #{user_pkmn.hp} hp left"
     else
       puts "#{user_pkmn.name} received #{user_pkmn.hp} dmg and fainted"
-      user_pkmn.take_damage(user_pkmn.hp)
+      dmg_dealt = user_pkmn.hp
+      user_pkmn.take_damage(dmg_dealt)
       puts "#{user_pkmn.name} has #{user_pkmn.hp} hp left"
     end
 

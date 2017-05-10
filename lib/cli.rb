@@ -58,18 +58,15 @@ class CLI
   end
 
   def battle(user_pokemon = nil, opponent_pokemon = nil, poke_battle = nil)
+
     user_pokemon = user_pokemon
     opponent_pokemon = opponent_pokemon
     opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
+    ##testing defeating a pokemon
+    #opponent_pokemon.reload
 
-    #to be altered once better methods become available
-    #poke_list = @user.first_not_fainted
-    #will simply take the first pokemon in list at current state
-    #need to take first not fainted
-    poke_list = @user.list_pokemons
-    first_pkmn_name = poke_list.first
-    first_pkmn = Pokemon.find_by_name(first_pkmn_name)
-    user_pokemon = first_pkmn unless user_pokemon
+    ##if new no user pokemon given, select the first available in lineup
+    auto_select_next_to_battle(opponent_pokemon) unless user_pokemon
 
     puts "You are battling #{opponent_pokemon.name} with #{user_pokemon.name}!"
     ####
@@ -116,22 +113,33 @@ class CLI
     end
   end
 
+
   def play_out_turn(user_pokemon, opponent_pokemon, poke_battle)
-    attack_types = choose_attack(user_pokemon, opponent_pokemon)
+
+
+    ##if battleing with different pokemon, create a new BattlePokemon instance, else use the same instance
     poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon) unless poke_battle
+
+
+    attack_types = choose_attack(user_pokemon, opponent_pokemon)
     poke_battle.set_atk_types(attack_types)
+
+    #use battle instance to play a battle turn
     battle_outcome = poke_battle.play_turn
+    #binding.pry
     case battle_outcome
-    when 1
+    when "Both Pokemon can still fight"
       battle(user_pokemon, opponent_pokemon, poke_battle)
-    when 2
+    when "You defeated the opponent"
       puts "You defeated #{opponent_pokemon.name}"
-      ## gain experience
-      ## call exp/level up
-      ## destroy opp pokemon from database
+
+      ##create gain exp class to give exp to pokemon
+      gain_experience = GainXP.new(@user, opponent_pokemon)
+
+
       main_options
-    when 3
-      puts "#{user_pkmn.name} fainted"
+    when "Your pokemon fainted"
+      puts "#{user_pokemon.name} fainted"
       auto_select_next_to_battle(opponent_pokemon)
     else
       puts "Error. Something went wrong"
@@ -143,6 +151,44 @@ class CLI
     #outcome 2. opp pkmnn fainted
     #outsome 3. usr pkmn fainted
     #play_turn(poke_battle)
+  end
+
+  def auto_select_next_to_battle(opponent_pokemon)
+    not_fainted_pkmn = @user.not_fainted
+    if not_fainted_pkmn.empty?
+      puts "You lost all your pokemon. Game Over"
+      self.welcome
+    else
+      next_pkmn = not_fainted_pkmn.first
+      battle(next_pkmn, opponent_pokemon)
+    end
+  end
+
+  def switch_pkmn(user_pokemon, opponent_pokemon)
+    trainer = user_pokemon.trainer
+    options = trainer.pokemons.order(:slot).select {|pokemon| pokemon != user_pokemon}
+    if options.length == 0
+      puts "You don't have any other Pokemon to switch to!"
+      battle(user_pokemon, opponent_pokemon)
+    end
+    puts "Which pokemon would you like to switch to?"
+    options.each.with_index(1) do |pokemon, idx|
+      puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})" if pokemon != user_pokemon
+    end
+    input = gets.chomp
+    range = (1..options.length).map {|num| num.to_s}
+    if range.include?(input)
+      new_pokemon = options[input.to_i - 1]
+      if new_pokemon.hp == 0
+        puts "You cannot select that Pokemon because it has fainted! Please try again."
+        switch_pkmn(user_pokemon, opponent_pokemon)
+      else
+        battle(new_pokemon, opponent_pokemon)
+      end
+    else
+      puts "Invalid input. Please try again"
+      switch_pkmn(user_pokemon, opponent_pokemon)
+    end
   end
 
 

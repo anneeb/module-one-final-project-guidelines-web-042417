@@ -101,6 +101,16 @@ class Pokemon < ActiveRecord::Base
     end
   end
 
+  def list_types
+    self.types.map do |type|
+      type.name
+    end
+  end
 
+  def next_evolution
+    self.evolutions.map do |evolution|
+      evolution.level
+    end.minimum
+  end
 
 end

@@ -14,10 +14,16 @@ class BattlePokemon
     #pokemon attack each other unless one of them faints
     if @user_first_attker
       user_attacks
-      opponent_attacks
+      #if hp == 0 then continue turn
+      opponent_attacks unless opp_pkmn.hp == 0
+      #if hp == 0 then tell user and make them switch pkmn
+      #should i pass message numbers for outcomes?
+      #outcome 1. continue as normal, both pkmn alive
+      #outcome 2. opp pkmnn fainted
+      #outsome 3. usr pkmn fainted
     else
       opponent_attacks
-      user_attacks
+      user_attacks unless user_pkmn.hp == 0
     end
 
   end
@@ -25,6 +31,8 @@ class BattlePokemon
 
   def user_attacks
     puts "#{user_pkmn.name} attacks #{opp_pkmn.name}"
+    #DamageCalculator(attk_type_and_stats, def_type_type_and_stats)
+    #if opp.hp > damaage then opp hp +- damage else opp.hp = 0
 
     #caluculates dmg to opponent based on types
 

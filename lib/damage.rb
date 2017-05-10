@@ -9,10 +9,10 @@ class Damage
   def damage
     random = rand(0.85..1.00)
     type_mods = type_resistance(@atk_type, @defr) #array of hashes that have modifiers
-    #type_mods.each {|type_mod| puts "#{@atk_type.name} is #{type_mod.type}"}
-
-    mods = random * type
-    damage = (((2 * atkr[:level] / 5) + 2) * (atkr[:attack] / defr[:defense]) / 50 + 2) * mods
+    type_mods.each {|type_mod| puts "#{@atk_type.name} is #{type_mod[effect:]} against #{type_mod[type:]}"}
+    type_multiplier = type_mods.inject {|product, mod| product * mod[mult:]}
+    mods = random * type_multiplier
+    damage = (((2 * @atkr[:level] / 5) + 2) * (@atkr[:attack] / @defr[:defense]) / 50 + 2) * mods
   end
 
   def type_resistance(atkr_type, defer)

@@ -172,7 +172,22 @@ class CLI
     options.each.with_index(1) do |pokemon, idx|
       puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})" if pokemon != user_pokemon
     end
+    input = gets.chomp
+    range = (1..options.length).map {|num| num.to_s}
+    if range.include?(input)
+      new_pokemon = options[input.to_i - 1]
+      if new_pokemon.hp == 0
+        puts "You cannot select that Pokemon because it has fainted! Please try again."
+        switch_pkmn(user_pokemon, opponent_pokemon)
+      else
+        battle(new_pokemon, opponent_pokemon)
+      end
+    else
+      puts "Invalid input. Please try again"
+      switch_pkmn(user_pokemon, opponent_pokemon)
+    end
   end
+
 
   def throw_pokeball(user_pokemon, opponent_pokemon, poke_battle)
     if @user.pokeballs == 0

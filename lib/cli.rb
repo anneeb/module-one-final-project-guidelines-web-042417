@@ -55,10 +55,14 @@ class CLI
     end
   end
 
-  def battle(user_pokemon = nil, opponent_pokemon = nil)
+  def battle(user_pokemon = nil, opponent_pokemon = nil, poke_battle = nil)
     opponent_pokemon = opponent_pokemon
     user_pokemon = user_pokemon
-    opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
+    #opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
+
+    #to be changed back to random once pokeapi works again
+    opponent_pokemon = Pokemon.find_by(pokemon_number: 7) unless opponent_pokemon
+
 
     #to be altered once better methods become available
     #poke_list = @user.first_not_fainted
@@ -82,12 +86,12 @@ class CLI
 
       #poke_battle.play_turn
       attack_types = choose_attack(user_pokemon, opponent_pokemon)
-      poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon)
+      poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon) unless poke_battle
+      poke_battle.play_turn
+      #play_out_battle(poke_battle)
 
-      play_out_battle(poke_battle)
-
-      puts "You are trying to battle #{opponent_pokemon.name}. Keep on battling" ##edit so that it will work with BattlePokemon
-      battle(user_pokemon, opponent_pokemon)
+      #puts "You are trying to battle #{opponent_pokemon.name}. Keep on battling" ##edit so that it will work with BattlePokemon
+      battle(user_pokemon, opponent_pokemon, poke_battle)
     when "2"
       switch_pkmn(opponent_pokemon)
     when "3"
@@ -104,11 +108,10 @@ class CLI
   def choose_attack(user_pkmn, opp_pkmn)
     user_pkmn_types = user_pkmn.types
     opp_pkmn_types = opp_pkmn.types
-    #binding.pry
 
     attack_types = []
     puts "Choose which type of attack you want to use."
-    user_pkmn_types.each_with_index {|type, index| "#{index + 1}. #{type}"}
+    user_pkmn_types.each_with_index {|type, index| puts "#{index + 1}. #{type.name}"}
     user_choice = gets.chomp.to_i
     if user_choice > 0 && user_choice <= user_pkmn_types.size
       attack_types << user_pkmn_types[user_choice - 1]

@@ -42,12 +42,15 @@ class CLI
     puts "Would you like to battle or change your lineup"
     puts "1. Battle"
     puts "2. View and edit lineup"
+    puts "0. Quit the game"
     input = gets.chomp
     case input
     when "1"
       #go to battle
     when "2"
       change_lineup
+    when "0"
+      exit
     else
       puts "Invalid input. Please try again"
       main_options
@@ -217,7 +220,6 @@ class CLI
         puts "Invalid input. Please try again"
       end
       id = @user.pokemons.where(slot: nil)[input.to_i - 1][:id]
-      Pokemon.destroy(id)
       Pokemon.find(id).update(slot: count)
       count += 1
     end

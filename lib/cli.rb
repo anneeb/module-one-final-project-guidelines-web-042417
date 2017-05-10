@@ -96,7 +96,7 @@ class CLI
       #puts "You are trying to battle #{opponent_pokemon.name}. Keep on battling" ##edit so that it will work with BattlePokemon
       battle(user_pokemon, opponent_pokemon, poke_battle)
     when "2"
-      switch_pkmn(opponent_pokemon)
+      switch_pkmn(user_pokemon, opponent_pokemon)
     when "3"
       throw_pokeball(poke_battle)
     when "4"
@@ -123,33 +123,6 @@ class CLI
     else
       choose_attack(user_pkmn, opp_pkmn)
     end
-  end
-
-  def play_out_battle(battle)
-    puts "Which attack would you like to use?"
-    #types = battle.get_user_types ###will break at the moment
-    #types.each_with_index {|type, index| puts "#{index + 1}. #{type}"} ##will break at the moment
-    #puts "#{types.size + 1}. Back to battle menu"
-    user_type_choice = gets.chomp.to_i
-
-    #if user_type_choice == 1
-    # => battle.play_turn(0)
-    #elsif user_type_choice == 2 && types.size == 2
-    # => battle.play_turn(1)
-    #elsif user_type_choice == 2
-    # => battle(battle.user_pkmn, battle.opp_pkmn)
-    #elsif user_type_choice == 3 && types.size == 2
-    # => battle(battle.user_pkmn, battle.opp_pkmn)
-    #else
-    # => play_out_battle(battle)
-    #end
-    test_over = false
-    if test_over
-      play_out_battle
-    else
-      main_options
-    end
-
   end
 
 

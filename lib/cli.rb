@@ -58,10 +58,10 @@ class CLI
   def battle(user_pokemon = nil, opponent_pokemon = nil, poke_battle = nil)
     opponent_pokemon = opponent_pokemon
     user_pokemon = user_pokemon
-    #opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
+    opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
 
     #to be changed back to random once pokeapi works again
-    opponent_pokemon = Pokemon.find_by(pokemon_number: 7) unless opponent_pokemon
+    #opponent_pokemon = Pokemon.find_by(pokemon_number: 7) unless opponent_pokemon
 
 
     #to be altered once better methods become available

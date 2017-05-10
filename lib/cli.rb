@@ -61,13 +61,10 @@ class CLI
   def battle(user_pokemon = nil, opponent_pokemon = nil, poke_battle = nil)
     opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
 
-    #to be changed back to random once pokeapi works again
-    #opponent_pokemon = Pokemon.find_by(pokemon_number: 7) unless opponent_pokemon
-
-
     #to be altered once better methods become available
     #poke_list = @user.first_not_fainted
     #will simply take the first pokemon in list at current state
+    #need to take first not fainted
     poke_list = @user.list_pokemons
     first_pkmn_name = poke_list.first
     first_pkmn = Pokemon.find_by_name(first_pkmn_name)

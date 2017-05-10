@@ -1,6 +1,6 @@
 class CLI
 
-  attr_reader :user
+  #attr_reader :user
   def initialize
     ##should this be a possibility? how will the data be kept after the user exits?
     #load Trainers.all each Trainer has pokemon stats and you can battle other pokemon and trainers at random
@@ -16,7 +16,7 @@ class CLI
 
   def load_or_create_trainer
     puts "Select a trainer to load or create a new one"
-    Trainer.all.each.with_index(1) {|trainer, idx| puts "#{idx}. #{trainer.name}" }
+    Trainer.all.each_with_index {|trainer, index| puts "#{index + 1}. #{trainer.name}" }
     puts "#{Trainer.all.size + 1}. Create new game "
     input = gets.chomp
 
@@ -36,22 +36,18 @@ class CLI
     new_trainer = Trainer.create(name: name)
     new_trainer.create_starters
     new_trainer
-
   end
 
   def main_options
     puts "Would you like to battle or change your lineup"
     puts "1. Battle"
-    puts "2. View or edit lineup"
-    puts "0. Exit the game"
+    puts "2. View and edit lineup"
     input = gets.chomp
     case input
     when "1"
-      battle
+      #go to battle
     when "2"
-      view_or_edit_lineup
-    when "0"
-      exit
+      change_lineup
     else
       puts "Invalid input. Please try again"
       main_options
@@ -81,14 +77,13 @@ class CLI
 
     case user_choice
     when "1"
-
-      #poke_battle.play_turn
-      play_out_turn(user_pokemon, opponent_pokemon, poke_battle)
-
+      poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon)
+      poke_battle.play_turn
+      battle(user_pokemon, opponent_pokemon)
     when "2"
-      switch_pkmn(user_pokemon, opponent_pokemon)
+      switch_pkmn(opponent_pokemon)
     when "3"
-      throw_pokeball(poke_battle)
+      throw_pokeball(user_pokemon, opponent_pokemon, poke_battle)
     when "4"
       puts "You've run away"
       main_options
@@ -138,6 +133,7 @@ class CLI
       ##create gain exp class to give exp to pokemon
       gain_experience = GainXP.new(@user, opponent_pokemon)
 
+
       main_options
     when "Your pokemon fainted"
       puts "#{user_pokemon.name} fainted"
@@ -176,35 +172,45 @@ class CLI
     options.each.with_index(1) do |pokemon, idx|
       puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})" if pokemon != user_pokemon
     end
-    input = gets.chomp
-    range = (1..options.length).map {|num| num.to_s}
-    if range.include?(input)
-      new_pokemon = options[input.to_i - 1]
-      if new_pokemon.hp == 0
-        puts "You cannot select that Pokemon because it has fainted! Please try again."
-        switch_pkmn(user_pokemon, opponent_pokemon)
-      else
-        battle(new_pokemon, opponent_pokemon)
-      end
-    else
-      puts "Invalid input. Please try again"
-      switch_pkmn(user_pokemon, opponent_pokemon)
-    end
   end
 
-
-  ### Post battle level up and evolution:
-  ##### LevelOrEvo.new(pokemon).check_status
-  ### Where pokemon is the pokemon you potentially are going to level up or evolve
-
-  def throw_pokeball(battle)
-    test_capture = false
-    if test_capture#battle.capture
-      puts "Congrats! You've captured #{opponent_pokemon.name}."
-      captured_pokemon
+  def throw_pokeball(user_pokemon, opponent_pokemon, poke_battle)
+    if @user.pokeballs == 0
+      puts "You cannot catch #{opponent_pokemon.name} because you're out of pokeballs"
+      battle(user_pokemon, opponent_pokemon, poke_battle)
+    end
+    catchy = Catch.new(user_pokemon, opponent_pokemon)
+    @user.update(pokeballs: @user.pokeballs - 1)
+    if catchy.caught? == true
+      puts "You've caught #{opponent_pokemon.name}! You now have #{@user.pokeballs} pokeballs."
+      if @user.pokemons.length == 6
+        input = ""
+        while input
+          puts "You have too many Pokemon and need to make room for #{opponent_pokemon.name}. Which Pokemon do you want to release?"
+          @user.pokemons.each.with_index(1) do |pokemon, idx|
+            puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})"
+          end
+          input = gets.chomp
+          range = (1..@user.pokemons.length).map {|num| num.to_s}
+          break if range.include?(input)
+          puts "Invalid input. Please try again"
+        end
+        id = @user.pokemons[input.to_i - 1].id
+        slot = Pokemon.find(id).slot
+        puts "You have released #{@user.pokemons[input.to_i - 1].name}"
+        Pokemon.find(id).destroy
+        catchy.add_caught_pokemon_with_replacement(slot)
+        @user.reload
+        main_options
+      else
+        catchy.add_caught_pokemon_with_increment_slot
+        @user.reload
+        main_options
+      end
     else
-      puts "#{opponent_pokemon.name} was too strong to be captured. Try to lower its HP a little more."
-      battle(battle.user_pokemon, battle.opponent_pokemon)
+      puts "You were not able to catch #{opponent_pokemon.name}. Try lowering it's HP some more."
+      puts "You now have #{@user.pokeballs} pokeballs."
+      battle(user_pokemon, opponent_pokemon, poke_battle)
     end
   end
 
@@ -242,6 +248,7 @@ class CLI
         puts "Invalid input. Please try again"
       end
       id = @user.pokemons.where(slot: nil)[input.to_i - 1][:id]
+      Pokemon.destroy(id)
       Pokemon.find(id).update(slot: count)
       count += 1
     end

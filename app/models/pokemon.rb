@@ -20,10 +20,18 @@ class Pokemon < ActiveRecord::Base
     resp = Adapter.get_pokemon_by_number(number)
     info = parse_info(resp)
     new_pokemon = self.new(info)
+
+    # set level and exp based on growth rate
     new_pokemon.set_level_and_exp(level)
-    parse = parse_types_and_evos(resp)
-    new_pokemon.add_types_from_parse(parse)
-    new_pokemon.add_evos_from_parse(parse)
+
+    # get and set types and evos
+    info = parse_types_and_evos(resp)
+    new_pokemon.add_types(info)
+    new_pokemon.add_evos(info)
+
+    # get and set evos
+    # new_pokemon.add
+
     new_pokemon.save
     new_pokemon
   end
@@ -33,15 +41,15 @@ class Pokemon < ActiveRecord::Base
     self.experience = level_to_exp(level)
   end
 
-  def add_types_from_parse(hash)
-    hash[:types].each do |type_name|
+  def add_types(info)
+    info[:types].each do |type_name|
       type = Type.find_or_create_by(name: type_name)
       self.types << type
     end
   end
 
-  def add_evos_from_parse(hash)
-    hash[:evolutions].each do |k, v|
+  def add_evos(info)
+    info[:evolutions].each do |k, v|
       level = k
       number = v.split("/").last.to_i
       self.evolutions << Evolution.create(level: level, new_pokemon_number: number)
@@ -52,8 +60,11 @@ class Pokemon < ActiveRecord::Base
     info = {}
     resp.each do |k, v|
       case k
-      when "name", "hp", "catch_rate", "attack", "defense", "growth_rate", "speed"
+      when "name", "catch_rate", "attack", "defense", "growth_rate", "speed"
         info[k.to_sym] = v
+      when  "hp"
+        info[k.to_sym] = v
+        info[:base_hp] = v
       when "pkdx_id"
         info[:pokemon_number] = v
       when "sp_atk"

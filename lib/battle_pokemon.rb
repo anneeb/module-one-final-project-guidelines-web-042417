@@ -74,6 +74,10 @@ class BattlePokemon
   end
 
   def opponent_attacks
+<<<<<<< HEAD
+=======
+    # binding.pry
+>>>>>>> 0f59551e75fb90881d107dcfa66b774b77553c20
     puts "#{opp_pkmn.name} attacks #{user_pkmn.name} with #{@opp_atk_type.name} move"
     dmg_calc = Damage.new(@opp_pkmn, @user_pkmn, @opp_atk_type)
     max_dmg_dealt = dmg_calc.damage.round(0)

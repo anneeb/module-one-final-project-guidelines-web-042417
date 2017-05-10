@@ -5,8 +5,6 @@ class Pokemon < ActiveRecord::Base
   has_many :pokemon_evolutions
   has_many :evolutions, through: :pokemon_evolutions
 
-<<<<<<< HEAD
-<<<<<<< HEAD
   def self.create_random_from_level(level:)
     resp = Adapter.get_random_pokemon
     info = parse_info(resp)
@@ -18,10 +16,6 @@ class Pokemon < ActiveRecord::Base
     new_pokemon
   end
 
-=======
->>>>>>> parent of c37b506... deleted cli, database.db, schema.db
-=======
->>>>>>> parent of c37b506... deleted cli, database.db, schema.db
   def self.create_from_number_and_level(number:, level:)
     resp = Adapter.get_pokemon_by_number(number)
     info = parse_info(resp)
@@ -66,8 +60,11 @@ class Pokemon < ActiveRecord::Base
     info = {}
     resp.each do |k, v|
       case k
-      when "name", "hp", "catch_rate", "attack", "defense", "growth_rate", "speed"
+      when "name", "catch_rate", "attack", "defense", "growth_rate", "speed"
         info[k.to_sym] = v
+      when  "hp"
+        info[k.to_sym] = v
+        info[:base_hp] = v
       when "pkdx_id"
         info[:pokemon_number] = v
       when "sp_atk"

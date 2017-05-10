@@ -73,7 +73,7 @@ class BattlePokemon
   end
 
   def opponent_attacks
-    binding.pry
+    # binding.pry
     puts "#{opp_pkmn.name} attacks #{user_pkmn.name} with #{@opp_atk_type.name} move"
     #binding.pry
     dmg_calc = Damage.new(@opp_pkmn, @user_pkmn, @opp_atk_type)

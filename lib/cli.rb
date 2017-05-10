@@ -61,12 +61,11 @@ class CLI
     opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
 
     #to be altered once better methods become available
+    #poke_list = @user.first_not_fainted
+    #will simply take the first pokemon in list at current state
     poke_list = @user.list_pokemons
     first_pkmn_name = poke_list.first
-    #binding.pry
     first_pkmn = Pokemon.find_by_name(first_pkmn_name)
-    binding.pry
-    #user_pokemon |= first_pkmn #@user.pokemon.first_not_fainted ##???
     user_pokemon  = first_pkmn unless user_pokemon
     ####
 
@@ -80,9 +79,9 @@ class CLI
 
     case user_choice
     when "1"
-      #poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon)
+      poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon)
       #poke_battle.play_turn
-      #choose attack
+      attack_types = choose_attack(user_pokemon, opponent_pokemon)
       #play_out_battle(poke_battle)
       puts "You are trying to battle #{opponent_pokemon.name}. Keep on battling" ##edit so that it will work with BattlePokemon
       battle(user_pokemon, opponent_pokemon)
@@ -97,6 +96,24 @@ class CLI
       battle(user_pokemon, opponent_pokemon)
     end
 
+  end
+
+  def choose_attack(user_pkmn, opp_pkmn)
+    user_pkmn_types = user_pkmn.types
+    opp_pkmn_types = opp_pkmn.types
+    #binding.pry
+
+    attack_types = []
+    puts "Choose which type of attack you want to use."
+    user_pkmn_types.each_with_index {|type, index| "#{index + 1}. #{type}"}
+    user_choice = gets.chomp.to_i
+    if user_choice > 0 && user_choice <= user_pkmn_types.size
+      attack_types << user_pkmn_types[user_choice - 1]
+      attack_types << opp_pkmn_types.sample
+      attack_types #shovels in a random choice fromn the opponents types
+    else
+      choose_attack(user_pkmn, opp_pkmn)
+    end
   end
 
   def play_out_battle(battle)

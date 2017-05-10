@@ -46,8 +46,12 @@ class BattlePokemon
     #caluculates dmg to opponent based on types
     if opp_pkmn.hp > max_dmg_dealt
       puts "#{opp_pkmn.name} received #{max_dmg_dealt} dmg"
+      opp_pkmn.take_damage(max_dmg_dealt)
+      puts "#{opp_pkmn.name} has #{opp_pkmn.hp} hp left"
     else
       puts "#{opp_pkmn.name} received #{opp_pkmn.hp} dmg and fainted"
+      opp_pkmn.take_damage(opp_pkmn.hp)
+      puts "#{opp_pkmn.name} has #{opp_pkmn.hp} hp left"
     end
 
   end
@@ -60,8 +64,12 @@ class BattlePokemon
 
     if user_pkmn.hp > max_dmg_dealt
       puts "#{user_pkmn.name} received #{max_dmg_dealt} dmg"
+      user_pkmn.take_damage(max_dmg_dealt)
+      puts "#{user_pkmn.name} has #{user_pkmn.hp} hp left"
     else
       puts "#{user_pkmn.name} received #{user_pkmn.hp} dmg and fainted"
+      user_pkmn.take_damage(user_pkmn.hp)
+      puts "#{user_pkmn.name} has #{user_pkmn.hp} hp left"
     end
 
   end

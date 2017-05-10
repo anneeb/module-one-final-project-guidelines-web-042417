@@ -101,6 +101,11 @@ class Pokemon < ActiveRecord::Base
     end
   end
 
+  def take_damage(dmg)
+    curr_hp = self.hp
+    new_hp = curr_hp - dmg
+    self.class.update(self.id, hp: new_hp)
+  end
 
 
 end

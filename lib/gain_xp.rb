@@ -2,7 +2,6 @@ class GainXP
 
 
   def initialize(trainer, defeated_pkmn)
-    binding.pry
     @trainer, @defeated_pkmn = trainer, defeated_pkmn
     self.give_exp_to_pkmn
   end

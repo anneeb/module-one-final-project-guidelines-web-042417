@@ -79,10 +79,12 @@ class CLI
 
     case user_choice
     when "1"
-      poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon)
+
       #poke_battle.play_turn
       attack_types = choose_attack(user_pokemon, opponent_pokemon)
-      #play_out_battle(poke_battle)
+      poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon)
+
+      play_out_battle(poke_battle)
       puts "You are trying to battle #{opponent_pokemon.name}. Keep on battling" ##edit so that it will work with BattlePokemon
       battle(user_pokemon, opponent_pokemon)
     when "2"

@@ -72,7 +72,6 @@ class CLI
     first_pkmn = Pokemon.find_by_name(first_pkmn_name)
     user_pokemon  = first_pkmn unless user_pokemon
     ####
-
     puts "What would you like to do"
     puts "1. Attack #{opponent_pokemon.name}"
     puts "2. Switch to a different pokemon"
@@ -87,6 +86,7 @@ class CLI
       #poke_battle.play_turn
       attack_types = choose_attack(user_pokemon, opponent_pokemon)
       poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon) unless poke_battle
+      poke_battle.set_atk_types(attack_types)
       poke_battle.play_turn
       #play_out_battle(poke_battle)
 

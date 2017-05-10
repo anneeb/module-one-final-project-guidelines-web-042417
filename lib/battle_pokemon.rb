@@ -28,18 +28,42 @@ class BattlePokemon
 
   end
 
+  def set_atk_types(atk_types)
+    @usr_atk_type = atk_types[0]
+    @opp_atk_type = atk_types[1]
+  end
+
 
   def user_attacks
-    puts "#{user_pkmn.name} attacks #{opp_pkmn.name}"
+    puts "#{user_pkmn.name} attacks #{opp_pkmn.name} with #{@usr_atk_type.name} move"
+    #binding.pry
+    dmg_calc = Damage.new(@user_pkmn, @opp_pkmn, @usr_atk_type)
+    max_dmg_dealt = dmg_calc.damage.round(0)
+    #binding.pry
     #DamageCalculator(attk_type_and_stats, def_type_type_and_stats)
     #if opp.hp > damaage then opp hp +- damage else opp.hp = 0
 
     #caluculates dmg to opponent based on types
+    if opp_pkmn.hp > max_dmg_dealt
+      puts "#{opp_pkmn.name} received #{max_dmg_dealt} dmg"
+    else
+      puts "#{opp_pkmn.name} received #{opp_pkmn.hp} dmg and fainted"
+    end
 
   end
 
   def opponent_attacks
-    puts "#{opp_pkmn.name} attacks #{opp_pkmn.name}"
+    puts "#{opp_pkmn.name} attacks #{user_pkmn.name} with #{@opp_atk_type.name} move"
+    #binding.pry
+    dmg_calc = Damage.new(@opp_pkmn, @user_pkmn, @opp_atk_type)
+    max_dmg_dealt = dmg_calc.damage.round(0)
+
+    if user_pkmn.hp > max_dmg_dealt
+      puts "#{user_pkmn.name} received #{max_dmg_dealt} dmg"
+    else
+      puts "#{user_pkmn.name} received #{user_pkmn.hp} dmg and fainted"
+    end
+
   end
 
 

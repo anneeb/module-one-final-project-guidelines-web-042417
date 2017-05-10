@@ -8,16 +8,18 @@ class Damage
 
   def damage
     random = rand(0.85..1.00)
+    #binding.pry
     type_mods = type_resistance(@atk_type, @defr) #array of hashes that have modifiers
-    type_mods.each {|type_mod| puts "#{@atk_type.name} is #{type_mod[effect:]} against #{type_mod[type:]}"}
-    type_multiplier = type_mods.inject {|product, mod| product * mod[mult:]}
-    mods = random * type_multiplier
+    type_mods.each {|type_mod| puts "#{@atk_type.name} is #{type_mod[:effect]} against #{type_mod[:type]}" }
+    type_multipliers = type_mods.collect {|mod| mod[:mult]}
+    total_type_multiplier = type_multipliers.inject{|product, mult| product * mult}
+    mods = random * total_type_multiplier
     damage = (((2 * @atkr[:level] / 5) + 2) * (@atkr[:attack] / @defr[:defense]) / 50 + 2) * mods
   end
 
   def type_resistance(atkr_type, defer)
     res = []
-    a_type = atker_type.name
+    a_type = atk_type.name
     defer_types = defer.types.collect {|defer_type| defer_type.name}
       defer_types.each do |d_type|
         case a_type

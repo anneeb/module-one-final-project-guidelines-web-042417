@@ -59,11 +59,9 @@ class CLI
   end
 
   def battle(user_pokemon = nil, opponent_pokemon = nil, poke_battle = nil)
-<<<<<<< HEAD
-=======
+
     user_pokemon = user_pokemon
     opponent_pokemon = opponent_pokemon
->>>>>>> 7f7fa757982889429fb5cdf3cc27d017103dd3d3
     opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
 
     #to be altered once better methods become available
@@ -121,33 +119,6 @@ class CLI
     end
   end
 
-<<<<<<< HEAD
-  def play_out_battle(battle)
-    puts "Which attack would you like to use?"
-    #types = battle.get_user_types ###will break at the moment
-    #types.each_with_index {|type, index| puts "#{index + 1}. #{type}"} ##will break at the moment
-    #puts "#{types.size + 1}. Back to battle menu"
-    user_type_choice = gets.chomp.to_i
-
-    #if user_type_choice == 1
-    # => battle.play_turn(0)
-    #elsif user_type_choice == 2 && types.size == 2
-    # => battle.play_turn(1)
-    #elsif user_type_choice == 2
-    # => battle(battle.user_pkmn, battle.opp_pkmn)
-    #elsif user_type_choice == 3 && types.size == 2
-    # => battle(battle.user_pkmn, battle.opp_pkmn)
-    #else
-    # => play_out_battle(battle)
-    #end
-    test_over = false
-    if test_over
-      play_out_battle
-    else
-      main_options
-    end
-
-  end
 
   def play_out_turn(user_pokemon, opponent_pokemon, poke_battle)
     attack_types = choose_attack(user_pokemon, opponent_pokemon)
@@ -175,23 +146,11 @@ class CLI
     #play_turn(poke_battle)
   end
 
-
-  def switch_pkmn(opponent_pokemon)
-    puts "Choose the pokemon you want to use."
-    puts "This is part of a test. Code will break because user.available_pkmn methods haven't been implemented yet"
-    available_pkmn = @user.available_pkmn# gets pokemon names @user.pokemon.reject {|pokemon| pokemon.fainted} #need to have a fainted status for each pokemon and put into User class?
-    available_pkmn.each_with_index {|pokemon, index| puts "#{index + 1}. #{pokemon.name}"}
-    pkmn_choice = gets.chomp.to_i
-    if pkmn_choice > 0 && pkmn_choice <= available_pkmn.size
-      pkmn_name = available_pkmn[pkmn_choice - 1]
-      user_pokemon = Pokemon.find_by_name(pkmn_name) # can get pokemon from user???
-=======
   def switch_pkmn(user_pokemon, opponent_pokemon)
     trainer = user_pokemon.trainer
     options = trainer.pokemons.order(:slot).select {|pokemon| pokemon != user_pokemon}
     if options.length == 0
       puts "You don't have any other Pokemon to switch to!"
->>>>>>> 7f7fa757982889429fb5cdf3cc27d017103dd3d3
       battle(user_pokemon, opponent_pokemon)
     end
     puts "Which pokemon would you like to switch to?"

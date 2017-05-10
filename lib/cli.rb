@@ -16,7 +16,7 @@ class CLI
 
   def load_or_create_trainer
     puts "Select a trainer to load or create a new one"
-    Trainer.all.each_with_index {|trainer, index| puts "#{index + 1}. #{trainer.name}" }
+    Trainer.all.each.with_index(1) {|trainer, idx| puts "#{idx}. #{trainer.name}" }
     puts "#{Trainer.all.size + 1}. Create new game "
     input = gets.chomp
 
@@ -42,13 +42,16 @@ class CLI
   def main_options
     puts "Would you like to battle or change your lineup"
     puts "1. Battle"
-    puts "2. View and edit lineup"
+    puts "2. View or edit lineup"
+    puts "0. Exit the game"
     input = gets.chomp
     case input
     when "1"
       battle
     when "2"
-      change_lineup
+      view_or_edit_lineup
+    when "0"
+      exit
     else
       puts "Invalid input. Please try again"
       main_options
@@ -155,13 +158,54 @@ class CLI
   end
 
   def captured_pokemon
-
   end
 
+  def view_or_edit_lineup
+    display_lineup
+    puts "Do you want to change your lineup?"
+    puts "1. Yes"
+    puts "2. No"
+    input = gets.chomp
+    case input
+    when "1"
+      change_lineup
+    when "2"
+      main_options
+    else
+      puts "Invalid input. Please try again"
+      view_or_edit_lineup
+    end
+  end
 
   def change_lineup
-    #
+    count = 1
+    @user.pokemons.update_all(slot: nil)
+    count_max = @user.pokemons.length
+    while count <= count_max
+      input = ""
+      while input
+        puts "Which pokemon do you want for position #{count}?"
+        @user.pokemons.where(slot: nil).each.with_index(1) do |pokemon, idx|
+          puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})"
+        end
+        input = gets.chomp
+        range = (1..@user.pokemons.where(slot: nil).length).map {|num| num.to_s}
+        break if range.include?(input)
+        puts "Invalid input. Please try again"
+      end
+      id = @user.pokemons.where(slot: nil)[input.to_i - 1][:id]
+      Pokemon.find(id).update(slot: count)
+      count += 1
+    end
+    display_lineup
+    main_options
   end
 
+  def display_lineup
+    puts "Your current lineup is:"
+    @user.pokemons.order(:slot).each do |pokemon|
+      puts "#{pokemon.slot}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})"
+    end
+  end
 
 end

@@ -16,7 +16,9 @@ class CreatePokemons < ActiveRecord::Migration
       t.integer :special_attack
       t.integer :special_defense
       t.integer :speed
+
       t.references :trainer
+      t.integer :slot
     end
   end
 end

@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 6) do
     t.integer "special_defense"
     t.integer "speed"
     t.integer "trainer_id"
+    t.integer "slot"
   end
 
   create_table "trainers", force: :cascade do |t|

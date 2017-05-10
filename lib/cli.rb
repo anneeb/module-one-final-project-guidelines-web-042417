@@ -59,8 +59,6 @@ class CLI
   end
 
   def battle(user_pokemon = nil, opponent_pokemon = nil, poke_battle = nil)
-    opponent_pokemon = opponent_pokemon
-    user_pokemon = user_pokemon
     opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
 
     #to be changed back to random once pokeapi works again
@@ -87,14 +85,8 @@ class CLI
     when "1"
 
       #poke_battle.play_turn
-      attack_types = choose_attack(user_pokemon, opponent_pokemon)
-      poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon) unless poke_battle
-      poke_battle.set_atk_types(attack_types)
-      poke_battle.play_turn
-      #play_out_battle(poke_battle)
+      play_out_turn(user_pokemon, opponent_pokemon, poke_battle)
 
-      #puts "You are trying to battle #{opponent_pokemon.name}. Keep on battling" ##edit so that it will work with BattlePokemon
-      battle(user_pokemon, opponent_pokemon, poke_battle)
     when "2"
       switch_pkmn(opponent_pokemon)
     when "3"
@@ -150,6 +142,32 @@ class CLI
       main_options
     end
 
+  end
+
+  def play_out_turn(user_pokemon, opponent_pokemon, poke_battle)
+    attack_types = choose_attack(user_pokemon, opponent_pokemon)
+    poke_battle = BattlePokemon.new(user_pokemon, opponent_pokemon) unless poke_battle
+    poke_battle.set_atk_types(attack_types)
+    battle_outcome = poke_battle.play_turn
+    case battle_outcome
+    when 1
+      battle(user_pokemon, opponent_pokemon, poke_battle)
+    when 2
+      puts "You defeated #{opponent_pokemon.name}"
+      main_options
+    when 3
+      puts "#{user_pkmn.name} fainted"
+      auto_select_next_to_battle(opponent_pokemon)
+    else
+      puts "Error. Something went wrong"
+      main_options
+    end
+
+    #--------------------------------------------
+    #outcome 1. continue as normal, both pkmn alive
+    #outcome 2. opp pkmnn fainted
+    #outsome 3. usr pkmn fainted
+    #play_turn(poke_battle)
   end
 
 

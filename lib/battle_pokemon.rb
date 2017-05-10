@@ -14,16 +14,32 @@ class BattlePokemon
     #pokemon attack each other unless one of them faints
     if @user_first_attker
       user_attacks
-      #if hp == 0 then continue turn
+
       opponent_attacks unless opp_pkmn.hp == 0
-      #if hp == 0 then tell user and make them switch pkmn
-      #should i pass message numbers for outcomes?
+
+      #--------------------------------------------
       #outcome 1. continue as normal, both pkmn alive
       #outcome 2. opp pkmnn fainted
       #outsome 3. usr pkmn fainted
+      if opp_pkmn.hp == 0
+        2
+      elsif user_pkmn.hp == 0
+        3
+      else
+        1
+      end
+
     else
       opponent_attacks
       user_attacks unless user_pkmn.hp == 0
+
+      if opp_pkmn.hp == 0
+        2
+      elsif user_pkmn.hp == 0
+        3
+      else
+        1
+      end
     end
 
   end
@@ -57,6 +73,7 @@ class BattlePokemon
   end
 
   def opponent_attacks
+    binding.pry
     puts "#{opp_pkmn.name} attacks #{user_pkmn.name} with #{@opp_atk_type.name} move"
     #binding.pry
     dmg_calc = Damage.new(@opp_pkmn, @user_pkmn, @opp_atk_type)

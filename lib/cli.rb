@@ -59,7 +59,6 @@ class CLI
   end
 
   def battle(user_pokemon = nil, opponent_pokemon = nil, poke_battle = nil)
-
     user_pokemon = user_pokemon
     opponent_pokemon = opponent_pokemon
     opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
@@ -89,7 +88,7 @@ class CLI
     when "2"
       switch_pkmn(user_pokemon, opponent_pokemon)
     when "3"
-      throw_pokeball(poke_battle)
+      throw_pokeball(user_pokemon, opponent_pokemon, poke_battle)
     when "4"
       puts "You've run away"
       main_options
@@ -115,7 +114,6 @@ class CLI
       choose_attack(user_pkmn, opp_pkmn)
     end
   end
-
 
   def play_out_turn(user_pokemon, opponent_pokemon, poke_battle)
 
@@ -198,14 +196,44 @@ class CLI
   ##### LevelOrEvo.new(pokemon).check_status
   ### Where pokemon is the pokemon you potentially are going to level up or evolve
 
-  def throw_pokeball(battle)
-    test_capture = false
-    if test_capture#battle.capture
-      puts "Congrats! You've captured #{opponent_pokemon.name}."
-      captured_pokemon
+
+  def throw_pokeball(user_pokemon, opponent_pokemon, poke_battle)
+    if @user.pokeballs == 0
+      puts "You cannot catch #{opponent_pokemon.name} because you're out of pokeballs"
+      battle(user_pokemon, opponent_pokemon, poke_battle)
+    end
+    catchy = Catch.new(user_pokemon, opponent_pokemon)
+    @user.update(pokeballs: @user.pokeballs - 1)
+    if catchy.caught? == true
+      puts "You've caught #{opponent_pokemon.name}! You now have #{@user.pokeballs} pokeballs."
+      if @user.pokemons.length == 6
+        input = ""
+        while input
+          puts "You have too many Pokemon and need to make room for #{opponent_pokemon.name}. Which Pokemon do you want to release?"
+          @user.pokemons.each.with_index(1) do |pokemon, idx|
+            puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})"
+          end
+          input = gets.chomp
+          range = (1..@user.pokemons.length).map {|num| num.to_s}
+          break if range.include?(input)
+          puts "Invalid input. Please try again"
+        end
+        id = @user.pokemons[input.to_i - 1].id
+        slot = Pokemon.find(id).slot
+        puts "You have released #{@user.pokemons[input.to_i - 1].name}"
+        Pokemon.find(id).destroy
+        catchy.add_caught_pokemon_with_replacement(slot)
+        @user.reload
+        main_options
+      else
+        catchy.add_caught_pokemon_with_increment_slot
+        @user.reload
+        main_options
+      end
     else
-      puts "#{opponent_pokemon.name} was too strong to be captured. Try to lower its HP a little more."
-      battle(battle.user_pokemon, battle.opponent_pokemon)
+      puts "You were not able to catch #{opponent_pokemon.name}. Try lowering it's HP some more."
+      puts "You now have #{@user.pokeballs} pokeballs."
+      battle(user_pokemon, opponent_pokemon, poke_battle)
     end
   end
 

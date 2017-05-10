@@ -11,6 +11,7 @@ class CreatePokemons < ActiveRecord::Migration
       t.string :growth_rate
 
       t.integer :hp
+      t.integer :base_hp
       t.integer :attack
       t.integer :defense
       t.integer :special_attack

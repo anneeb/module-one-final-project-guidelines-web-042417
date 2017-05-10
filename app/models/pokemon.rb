@@ -52,8 +52,11 @@ class Pokemon < ActiveRecord::Base
     info = {}
     resp.each do |k, v|
       case k
-      when "name", "hp", "catch_rate", "attack", "defense", "growth_rate", "speed"
+      when "name", "catch_rate", "attack", "defense", "growth_rate", "speed"
         info[k.to_sym] = v
+      when  "hp"
+        info[k.to_sym] = v
+        info[:base_hp] = v
       when "pkdx_id"
         info[:pokemon_number] = v
       when "sp_atk"

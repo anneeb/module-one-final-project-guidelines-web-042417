@@ -22,11 +22,11 @@ class BattlePokemon
       #outcome 2. opp pkmnn fainted
       #outsome 3. usr pkmn fainted
       if opp_pkmn.hp == 0
-        2
+        "You defeated the opponent"
       elsif user_pkmn.hp == 0
-        3
+        "Your pokemon fainted"
       else
-        1
+        "Both Pokemon can still fight"
       end
 
     else
@@ -34,11 +34,11 @@ class BattlePokemon
       user_attacks unless user_pkmn.hp == 0
 
       if opp_pkmn.hp == 0
-        2
+        "You defeated the opponent"
       elsif user_pkmn.hp == 0
-        3
+        "Your pokemon fainted"
       else
-        1
+        "Both Pokemon can still fight"
       end
     end
 

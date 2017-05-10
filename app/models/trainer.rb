@@ -13,6 +13,10 @@ class Trainer < ActiveRecord::Base
     end
   end
 
+  def not_fainted
+    self.pokemons.order(:slot).where.not('hp = 0')
+  end
+
   def create_and_add_from_num_and_level(number:, level:)
     new_pokemon = Pokemon.create_from_number_and_level(number: number, level: level)
     new_pokemon.update(slot: self.pokemons.length + 1)

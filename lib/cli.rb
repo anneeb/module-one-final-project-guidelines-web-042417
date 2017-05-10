@@ -68,10 +68,12 @@ class CLI
     #poke_list = @user.first_not_fainted
     #will simply take the first pokemon in list at current state
     #need to take first not fainted
+
     poke_list = @user.list_pokemons
     first_pkmn_name = poke_list.first
     first_pkmn = Pokemon.find_by_name(first_pkmn_name)
     user_pokemon = first_pkmn unless user_pokemon
+    #auto_select_next_to_battle
 
     puts "You are battling #{opponent_pokemon.name} with #{user_pokemon.name}!"
     ####
@@ -144,6 +146,17 @@ class CLI
     #outcome 2. opp pkmnn fainted
     #outsome 3. usr pkmn fainted
     #play_turn(poke_battle)
+  end
+
+  def auto_select_next_to_battle(opponent_pokemon)
+    not_fainted_pkmn = @user.not_fainted
+    if not_fainted_pkmn.empty?
+      puts "You lost all your pokemon. Game Over"
+      self.welcome
+    else
+      next_pkmn = not_fainted_pkmn.first
+      battle(next_pkmn, opponent_pokemon)
+    end
   end
 
   def switch_pkmn(user_pokemon, opponent_pokemon)

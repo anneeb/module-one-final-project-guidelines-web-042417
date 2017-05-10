@@ -63,17 +63,11 @@ class CLI
     user_pokemon = user_pokemon
     opponent_pokemon = opponent_pokemon
     opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
+    ##testing defeating a pokemon
+    opponent_pokemon.update(hp: 3)
 
-    #to be altered once better methods become available
-    #poke_list = @user.first_not_fainted
-    #will simply take the first pokemon in list at current state
-    #need to take first not fainted
-
-    poke_list = @user.list_pokemons
-    first_pkmn_name = poke_list.first
-    first_pkmn = Pokemon.find_by_name(first_pkmn_name)
-    user_pokemon = first_pkmn unless user_pokemon
-    #auto_select_next_to_battle
+    ##if new no user pokemon given, select the first available in lineup
+    auto_select_next_to_battle(opponent_pokemon) unless user_pokemon
 
     puts "You are battling #{opponent_pokemon.name} with #{user_pokemon.name}!"
     ####

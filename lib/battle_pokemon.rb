@@ -66,7 +66,8 @@ class BattlePokemon
       puts "#{opp_pkmn.name} has #{opp_pkmn.hp} hp left"
     else
       puts "#{opp_pkmn.name} received #{opp_pkmn.hp} dmg and fainted"
-      opp_pkmn.take_damage(opp_pkmn.hp)
+      dmg_dealt = opp_pkmn.hp
+      opp_pkmn.take_damage(dmg_dealt)
       puts "#{opp_pkmn.name} has #{opp_pkmn.hp} hp left"
     end
 
@@ -83,7 +84,8 @@ class BattlePokemon
       puts "#{user_pkmn.name} has #{user_pkmn.hp} hp left"
     else
       puts "#{user_pkmn.name} received #{user_pkmn.hp} dmg and fainted"
-      user_pkmn.take_damage(user_pkmn.hp)
+      dmg_dealt = user_pkmn.hp
+      user_pkmn.take_damage(dmg_dealt)
       puts "#{user_pkmn.name} has #{user_pkmn.hp} hp left"
     end
 

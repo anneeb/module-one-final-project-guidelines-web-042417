@@ -65,6 +65,7 @@ class CLI
     opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
     ##testing defeating a pokemon
     opponent_pokemon.update(hp: 3)
+    opponent_pokemon.reload
 
     ##if new no user pokemon given, select the first available in lineup
     auto_select_next_to_battle(opponent_pokemon) unless user_pokemon
@@ -134,6 +135,10 @@ class CLI
       battle(user_pokemon, opponent_pokemon, poke_battle)
     when "You defeated the opponent"
       puts "You defeated #{opponent_pokemon.name}"
+
+      ##create gain exp class to give exp to pokemon
+      gain_experience = GainXP.new(@user, opponent_pokemon)
+
       main_options
     when "Your pokemon fainted"
       puts "#{user_pokemon.name} fainted"

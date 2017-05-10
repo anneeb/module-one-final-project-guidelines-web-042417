@@ -111,6 +111,7 @@ class Pokemon < ActiveRecord::Base
     curr_hp = self.hp
     new_hp = curr_hp - dmg
     self.update(hp: new_hp)
+    self.reload
   end
 
   def next_evolution

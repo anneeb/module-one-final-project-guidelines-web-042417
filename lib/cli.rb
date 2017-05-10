@@ -169,6 +169,10 @@ class CLI
     end
   end
 
+  ### Post battle level up and evolution:
+  ##### LevelOrEvo.new(pokemon).check_status
+  ### Where pokemon is the pokemon you potentially are going to level up or evolve
+
   def throw_pokeball(battle)
     test_capture = false
     if test_capture#battle.capture

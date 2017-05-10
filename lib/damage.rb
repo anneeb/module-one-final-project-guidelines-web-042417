@@ -6,16 +6,20 @@ class Damage
     @atkr, @defr, @atk_type = atkr, defr, atk_type
   end
 
-  def damage(atkr, defr)
+  def damage
     random = rand(0.85..1.00)
+    type_mods = type_resistance(@atk_type, @defr) #array of hashes that have modifiers
+    #type_mods.each {|type_mod| puts "#{@atk_type.name} is #{type_mod.type}"}
+
     mods = random * type
     damage = (((2 * atkr[:level] / 5) + 2) * (atkr[:attack] / defr[:defense]) / 50 + 2) * mods
   end
 
-  def type(atker, defer)
+  def type_resistance(atkr_type, defer)
     res = []
-    atker.types.each do |a_type|
-      defer.types.each do |d_type|
+    a_type = atker_type.name
+    defer_types = defer.types.collect {|defer_type| defer_type.name}
+      defer_types.each do |d_type|
         case a_type
         when "normal"
           case d_type
@@ -128,8 +132,9 @@ class Damage
           end
         end
       end
-    end
     res
   end
+
+
 
 end

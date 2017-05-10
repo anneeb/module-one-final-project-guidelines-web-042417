@@ -59,8 +59,8 @@ class CLI
   end
 
   def battle(user_pokemon = nil, opponent_pokemon = nil, poke_battle = nil)
-    opponent_pokemon = opponent_pokemon
     user_pokemon = user_pokemon
+    opponent_pokemon = opponent_pokemon
     opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
 
     #to be changed back to random once pokeapi works again
@@ -73,7 +73,9 @@ class CLI
     poke_list = @user.list_pokemons
     first_pkmn_name = poke_list.first
     first_pkmn = Pokemon.find_by_name(first_pkmn_name)
-    user_pokemon  = first_pkmn unless user_pokemon
+    user_pokemon = first_pkmn unless user_pokemon
+
+    puts "You are battling #{opponent_pokemon.name} with #{user_pokemon.name}!"
     ####
     puts "What would you like to do"
     puts "1. Attack #{opponent_pokemon.name}"
@@ -125,22 +127,33 @@ class CLI
     end
   end
 
-
-  def switch_pkmn(opponent_pokemon)
-    puts "Choose the pokemon you want to use."
-    puts "This is part of a test. Code will break because user.available_pkmn methods haven't been implemented yet"
-    available_pkmn = @user.available_pkmn# gets pokemon names @user.pokemon.reject {|pokemon| pokemon.fainted} #need to have a fainted status for each pokemon and put into User class?
-    available_pkmn.each_with_index {|pokemon, index| puts "#{index + 1}. #{pokemon.name}"}
-    pkmn_choice = gets.chomp.to_i
-    if pkmn_choice > 0 && pkmn_choice <= available_pkmn.size
-      pkmn_name = available_pkmn[pkmn_choice - 1]
-      user_pokemon = Pokemon.find_by_name(pkmn_name) # can get pokemon from user???
+  def switch_pkmn(user_pokemon, opponent_pokemon)
+    trainer = user_pokemon.trainer
+    options = trainer.pokemons.order(:slot).select {|pokemon| pokemon != user_pokemon}
+    if options.length == 0
+      puts "You don't have any other Pokemon to switch to!"
       battle(user_pokemon, opponent_pokemon)
+    end
+    puts "Which pokemon would you like to switch to?"
+    options.each.with_index(1) do |pokemon, idx|
+      puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})" if pokemon != user_pokemon
+    end
+    input = gets.chomp
+    range = (1..options.length).map {|num| num.to_s}
+    if range.include?(input)
+      new_pokemon = options[input.to_i - 1]
+      if new_pokemon.hp == 0
+        puts "You cannot select that Pokemon because it has fainted! Please try again."
+        switch_pkmn(user_pokemon, opponent_pokemon)
+      else
+        battle(new_pokemon, opponent_pokemon)
+      end
     else
-      puts "Invalid choice. Please select a pokemon."
-      switch_pkmn(opponent_pokemon)
+      puts "Invalid input. Please try again"
+      switch_pkmn(user_pokemon, opponent_pokemon)
     end
   end
+
 
   ### Post battle level up and evolution:
   ##### LevelOrEvo.new(pokemon).check_status

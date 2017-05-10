@@ -12,8 +12,6 @@ class Pokemon < ActiveRecord::Base
     new_pokemon.set_level_and_exp(level)
     parse = parse_types_and_evos(resp)
     new_pokemon.add_types_from_parse(parse)
-    new_pokemon.add_evos_from_parse(parse)
-    new_pokemon.save
     new_pokemon
   end
 

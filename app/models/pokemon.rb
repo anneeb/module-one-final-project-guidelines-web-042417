@@ -86,7 +86,7 @@ class Pokemon < ActiveRecord::Base
   end
 
   def level_to_exp(level)
-    n = 5
+    n = level
     case self.growth_rate
     when "fast"
       (4 * n ** 3)/5

@@ -15,7 +15,7 @@ class Trainer < ActiveRecord::Base
 
   def create_and_add_from_num_and_level(number:, level:)
     new_pokemon = Pokemon.create_from_number_and_level(number: number, level: level)
-    new_pokemon.slot = self.pokemons.length + 1
+    new_pokemon.update(slot: self.pokemons.length + 1)
     self.pokemons << new_pokemon
   end
 

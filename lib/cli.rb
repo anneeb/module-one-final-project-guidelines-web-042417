@@ -190,11 +190,10 @@ class CLI
     @user.update(pokeballs: @user.pokeballs - 1)
     if catchy.caught? == true
       puts "You've caught #{opponent_pokemon.name}! You now have #{@user.pokeballs} pokeballs."
-      binding.pry
-      if @user.pokemons.length > 6
+      if @user.pokemons.length == 6
         input = ""
         while input
-          puts "You have too many pokemon and need to make room for #{opponent_pokemon.name}. Which pokemon do you want to delete?"
+          puts "You have too many Pokemon and need to make room for #{opponent_pokemon.name}. Which Pokemon do you want to release?"
           @user.pokemons.each.with_index(1) do |pokemon, idx|
             puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})"
           end
@@ -208,9 +207,11 @@ class CLI
         puts "You have released #{@user.pokemons[input.to_i - 1].name}"
         Pokemon.find(id).destroy
         catchy.add_caught_pokemon_with_replacement(slot)
+        @user.reload
         main_options
       else
         catchy.add_caught_pokemon_with_increment_slot
+        @user.reload
         main_options
       end
     else

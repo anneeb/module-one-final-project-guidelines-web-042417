@@ -59,11 +59,8 @@ class CLI
   end
 
   def battle(user_pokemon = nil, opponent_pokemon = nil, poke_battle = nil)
-<<<<<<< HEAD
-=======
     user_pokemon = user_pokemon
     opponent_pokemon = opponent_pokemon
->>>>>>> 7f7fa757982889429fb5cdf3cc27d017103dd3d3
     opponent_pokemon = Pokemon.create_random_from_level(level: 2) unless opponent_pokemon
 
     #to be altered once better methods become available

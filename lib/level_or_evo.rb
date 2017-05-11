@@ -18,9 +18,9 @@ class LevelOrEvo
       self.level_up
       if self.ready_for_evo?
         self.evolve
-        self.run_level_or_exp
+        self.run_level_or_evo
       else
-        self.run_level_or_exp
+        self.run_level_or_evo
       end
     else
       puts "You now have a level #{self.pokemon.level} #{self.pokemon.name}."

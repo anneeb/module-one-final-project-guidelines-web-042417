@@ -9,7 +9,7 @@ class GainXP
   def experience_gain
     l = @defeated_pkmn.level
     s = @trainer.not_fainted.size # The number of Pokémon that participated in the battle and have not fainted"
-    exp = (l / (7 * s)) + 1
+    exp = (15 * l / s) + 1
   end
 
   def give_exp_to_pkmn

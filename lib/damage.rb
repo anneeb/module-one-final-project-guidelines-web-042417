@@ -9,21 +9,24 @@ class Damage
   def damage
     random = rand(0.85..1.00)
     type_mods = type_resistance(@atk_type, @defr) #array of hashes that have modifiers
+    #binding.pry
     if type_mods.empty?
       total_type_multiplier = 1.0
     else
-      type_mods.each {|type_mod| puts "#{@atk_type.name} is #{type_mod[:effect]} against #{type_mod[:type]}" }
+      #binding.pry
+      type_mods.each {|type_mod| puts "#{@atk_type.name} is #{type_mod[:effect]} against #{type_mod[:type].upcase}" }
       type_multipliers = type_mods.collect {|mod| mod[:mult]}
       total_type_multiplier = type_multipliers.inject{|product, mult| product * mult}
     end
-    mods = random * total_type_multiplier * 1.5 # 1.5 represents STAB bonus
-    damage = (((2 * @atkr[:level] / 5) + 2) * (@atkr[:special_attack] / @defr[:special_defense]) * 40 / 50 + 2) * mods # 40 represents power of move which is constant since there are no specific moves
+    mods = random * total_type_multiplier * 3 # 4 represents STAB bonus
+    damage = (((4 * @atkr[:level] / 5) + 2) * (@atkr[:special_attack] / @defr[:special_defense]) * 50 / 50 + 2) * mods # 50 represents power of move which is constant since there are no specific moves
   end
 
-  def type_resistance(atkr_type, defer)
+  def type_resistance(atk_type, defer)
+    #binding.pry
     res = []
-    a_type = atk_type.name
-    defer_types = defer.types.collect {|defer_type| defer_type.name}
+    a_type = atk_type.name.downcase
+    defer_types = defer.types.collect {|defer_type| defer_type.name.downcase}
       defer_types.each do |d_type|
         case a_type
         when "normal"

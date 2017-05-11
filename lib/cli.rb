@@ -77,7 +77,7 @@ class CLI
   end
 
   def main_options
-    puts "Hello, #{@user.name}! Would you like to battle or change your lineup?"
+    puts "Would you like to battle or change your lineup?"
     puts "1. Battle"
     puts "2. View or edit lineup"
     puts "0. Exit the game"

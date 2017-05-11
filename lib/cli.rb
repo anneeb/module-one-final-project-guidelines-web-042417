@@ -212,9 +212,9 @@ class CLI
     end
     puts "Which pokemon would you like to switch to?"
     options.each.with_index(1) do |pokemon, idx|
-      puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})" if pokemon != user_pokemon
+      puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})" if pokemon != user_pokemon
     end
-    puts "0. Stick with #{user_pokemon.name} (type: #{user_pokemon.list_types.join(", ")}, level: #{user_pokemon.level}, hp: #{user_pokemon.hp})"
+    puts "0. Stick with #{user_pokemon.name} (type: #{user_pokemon.list_types.join(", ")}, lvl: #{user_pokemon.level}, hp: #{user_pokemon.hp})"
     input = gets.chomp
     range = (1..options.length).map {|num| num.to_s}
     if range.include?(input)
@@ -254,7 +254,7 @@ class CLI
         while input
           puts "You have too many Pokemon and need to make room for #{opponent_pokemon.name}. Which Pokemon do you want to release?"
           @user.pokemons.each.with_index(1) do |pokemon, idx|
-            puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})"
+            puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})"
           end
           input = gets.chomp
           range = (1..@user.pokemons.length).map {|num| num.to_s}
@@ -308,7 +308,7 @@ class CLI
       while input
         puts "Which pokemon do you want for position #{count}?"
         @user.pokemons.where(slot: nil).each.with_index(1) do |pokemon, idx|
-          puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})"
+          puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})"
         end
         input = gets.chomp
         range = (1..@user.pokemons.where(slot: nil).length).map {|num| num.to_s}
@@ -326,7 +326,7 @@ class CLI
   def display_lineup
     puts "Your current lineup is:"
     @user.pokemons.order(:slot).each do |pokemon|
-      puts "#{pokemon.slot}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})"
+      puts "#{pokemon.slot}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})"
     end
   end
 

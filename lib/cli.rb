@@ -20,7 +20,7 @@ class CLI
       @user = create_trainer
     elsif input.to_i > 0 && input.to_i <= Trainer.all.size
       @user = Trainer.all[input.to_i - 1]
-    elsif input.to_i == 0 && Trainer.all.size > 0
+    elsif input == "0" && Trainer.all.size > 0
       delete_trainer
     else
       puts "Invalid input. Please try again."
@@ -50,11 +50,11 @@ class CLI
     input = gets.chomp
     if input.to_i > 0
       confirm_delete_trainer(input)
-    elsif input.to_i == 0
+    elsif input == "0"
       load_or_create_trainer
     else
       puts "Invalid input. Please try again."
-      confirm_delete_trainer(first_input)
+      delete_trainer
     end
   end
 

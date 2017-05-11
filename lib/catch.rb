@@ -9,9 +9,8 @@ class Catch
   def caught?
     max_hp = self.desired_pokemon.level_hp
     hp = self.desired_pokemon.hp
-    cr = self.desired_pokemon.catch_rate
-    m = rand(0..255)
-    f = (cr + 1) * (max_hp / hp)
+    m = rand(0..100)
+    f = (max_hp / hp) * 5.0
     f >= m ? true : false
   end
 

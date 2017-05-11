@@ -1,12 +1,6 @@
 class CLI
 
   attr_reader :user
-  def initialize
-    ##should this be a possibility? how will the data be kept after the user exits?
-    #load Trainers.all each Trainer has pokemon stats and you can battle other pokemon and trainers at random
-    #@game = Game.new
-    #choose to load trainer or create a new one
-  end
 
   def welcome
     puts "Welcome message"

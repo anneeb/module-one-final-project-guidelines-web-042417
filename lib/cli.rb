@@ -113,6 +113,7 @@ class CLI
     puts "You are battling #{opponent_pokemon.name.colorize(:red)} (lvl: #{opponent_pokemon.level}, hp: #{opponent_pokemon.hp}) with #{user_pokemon.name.colorize(:blue)} (lvl: #{user_pokemon.level}, hp: #{user_pokemon.hp})!"
     ####
     puts "---------------------------------------------------------------------"
+    sleep(0.5)
     puts "What would you like to do?"
     puts "1. Attack #{opponent_pokemon.name.colorize(:red)}"
     puts "2. Switch to a different pokemon"
@@ -179,18 +180,18 @@ class CLI
       battle(user_pokemon, opponent_pokemon, poke_battle)
     when "You defeated the opponent"
       puts "!!!You defeated #{opponent_pokemon.name.colorize(:red)}!!!"
-      sleep(1)
+      sleep(0.5)
       ##create gain exp class to give exp to pokemon
       gain_experience = GainXP.new(@user, opponent_pokemon)
       opponent_pokemon.destroy
       main_options
     when "Your pokemon fainted"
       puts "#{user_pokemon.name.colorize(:blue)} fainted"
-      sleep(1)
+      sleep(0.5)
       auto_select_next_to_battle(opponent_pokemon)
     else
       puts "Error. Something went wrong"
-      sleep(1)
+      sleep(0.5)
       main_options
     end
 
@@ -266,7 +267,7 @@ class CLI
     sleep(1)
     if catchy.caught? == true
       puts "You've caught #{opponent_pokemon.name.colorize(:red)}! You now have #{@user.pokeballs} pokeballs."
-      sleep(1)
+      sleep(0.5)
       if @user.pokemons.length == 6
         input = ""
         while input
@@ -296,7 +297,7 @@ class CLI
     else
       puts "You were not able to catch #{opponent_pokemon.name.colorize(:red)}. Try lowering it's HP some more."
       puts "You now have #{@user.pokeballs} pokeballs."
-      sleep(1)
+      sleep(0.5)
       battle(user_pokemon, opponent_pokemon, poke_battle)
     end
   end

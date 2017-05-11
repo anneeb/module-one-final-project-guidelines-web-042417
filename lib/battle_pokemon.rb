@@ -52,7 +52,7 @@ class BattlePokemon
 
   def user_attacks
     puts "#{user_pkmn.name.colorize(:blue)} attacks #{opp_pkmn.name.colorize(:red)} with #{@usr_atk_type.name}"
-    sleep(1)
+    sleep(0.5)
     #binding.pry
     dmg_calc = Damage.new(@user_pkmn, @opp_pkmn, @usr_atk_type)
     max_dmg_dealt = dmg_calc.damage.round(0)
@@ -63,40 +63,40 @@ class BattlePokemon
     #caluculates dmg to opponent based on types
     if opp_pkmn.hp > max_dmg_dealt
       puts "--#{opp_pkmn.name.colorize(:red)} received #{max_dmg_dealt} dmg"
-      sleep(1)
+      sleep(0.5)
       opp_pkmn.take_damage(max_dmg_dealt)
       puts "--#{opp_pkmn.name.colorize(:red)} has #{opp_pkmn.hp} hp left"
-      sleep(1)
+      sleep(0.5)
     else
       puts "--#{opp_pkmn.name.colorize(:red)} received #{opp_pkmn.hp} dmg"
-      sleep(1)
+      sleep(0.5)
       dmg_dealt = opp_pkmn.hp
       opp_pkmn.take_damage(dmg_dealt)
       puts "--#{opp_pkmn.name.colorize(:red)} has #{opp_pkmn.hp} hp left"
-      sleep(1)
+      sleep(0.5)
     end
 
   end
 
   def opponent_attacks
-    sleep(1)
+    sleep(0.5)
     puts "#{opp_pkmn.name.colorize(:red)} attacks #{user_pkmn.name.colorize(:blue)} with #{@opp_atk_type.name}"
     dmg_calc = Damage.new(@opp_pkmn, @user_pkmn, @opp_atk_type)
     max_dmg_dealt = dmg_calc.damage.round(0)
 
     if user_pkmn.hp > max_dmg_dealt
       puts "--#{user_pkmn.name.colorize(:blue)} received #{max_dmg_dealt} dmg"
-      sleep(1)
+      sleep(0.5)
       user_pkmn.take_damage(max_dmg_dealt)
       puts "--#{user_pkmn.name.colorize(:blue)} has #{user_pkmn.hp} hp left"
-      sleep(1)
+      sleep(0.5)
     else
       puts "--#{user_pkmn.name.colorize(:blue)} received #{user_pkmn.hp} dmg"
-      sleep(1)
+      sleep(0.5)
       dmg_dealt = user_pkmn.hp
       user_pkmn.take_damage(dmg_dealt)
       puts "--#{user_pkmn.name.colorize(:blue)} has #{user_pkmn.hp} hp left"
-      sleep(1)
+      sleep(0.5)
     end
 
   end

@@ -110,11 +110,11 @@ class CLI
     ##if new no user pokemon given, select the first available in lineup
     auto_select_next_to_battle(opponent_pokemon) unless user_pokemon
     puts "---------------------------------------------------------------------"
-    puts "You are battling #{opponent_pokemon.name} (lvl: #{opponent_pokemon.level}, hp: #{opponent_pokemon.hp}) with #{user_pokemon.name} (lvl: #{user_pokemon.level}, hp: #{user_pokemon.hp})!"
+    puts "You are battling #{opponent_pokemon.name.colorize(:red)} (lvl: #{opponent_pokemon.level}, hp: #{opponent_pokemon.hp}) with #{user_pokemon.name.colorize(:blue)} (lvl: #{user_pokemon.level}, hp: #{user_pokemon.hp})!"
     ####
     puts "---------------------------------------------------------------------"
     puts "What would you like to do?"
-    puts "1. Attack #{opponent_pokemon.name}"
+    puts "1. Attack #{opponent_pokemon.name.colorize(:red)}"
     puts "2. Switch to a different pokemon"
     puts "3. Try to catch pokemon"
     puts "4. Run away"
@@ -178,17 +178,19 @@ class CLI
     when "Both Pokemon can still fight"
       battle(user_pokemon, opponent_pokemon, poke_battle)
     when "You defeated the opponent"
-      puts "You defeated #{opponent_pokemon.name}"
-
+      puts "!!!You defeated #{opponent_pokemon.name.colorize(:red)}!!!"
+      sleep(1)
       ##create gain exp class to give exp to pokemon
       gain_experience = GainXP.new(@user, opponent_pokemon)
       opponent_pokemon.destroy
       main_options
     when "Your pokemon fainted"
-      puts "#{user_pokemon.name} fainted"
+      puts "#{user_pokemon.name.colorize(:blue)} fainted"
+      sleep(1)
       auto_select_next_to_battle(opponent_pokemon)
     else
       puts "Error. Something went wrong"
+      sleep(1)
       main_options
     end
 
@@ -203,6 +205,7 @@ class CLI
     not_fainted_pkmn = @user.not_fainted
     if not_fainted_pkmn.empty?
       puts "You lost all your pokemon. Game Over"
+      sleep(1)
       opponent_pokemon.destroy
       @user.pokemons.destroy_all
       @user.destroy
@@ -223,9 +226,9 @@ class CLI
     puts "---------------------------------------------------------------------"
     puts "Which pokemon would you like to switch to?"
     options.each.with_index(1) do |pokemon, idx|
-      puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})" if pokemon != user_pokemon
+      puts "#{idx}. #{pokemon.name.colorize(:blue)} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})" if pokemon != user_pokemon
     end
-    puts "0. Stick with #{user_pokemon.name} (type: #{user_pokemon.list_types.join(", ")}, lvl: #{user_pokemon.level}, hp: #{user_pokemon.hp})"
+    puts "0. Stick with #{user_pokemon.name.colorize(:blue)} (type: #{user_pokemon.list_types.join(", ")}, lvl: #{user_pokemon.level}, hp: #{user_pokemon.hp})"
     input = gets.chomp
     range = (1..options.length).map {|num| num.to_s}
     if range.include?(input)
@@ -252,20 +255,24 @@ class CLI
 
 
   def throw_pokeball(user_pokemon, opponent_pokemon, poke_battle)
+    puts "---------------------------------------------------------------------"
     if @user.pokeballs == 0
-      puts "You cannot catch #{opponent_pokemon.name} because you're out of pokeballs"
+      puts "You cannot catch #{opponent_pokemon.name.colorize(:red)} because you're out of pokeballs"
       battle(user_pokemon, opponent_pokemon, poke_battle)
     end
     catchy = Catch.new(user_pokemon, opponent_pokemon)
     @user.update(pokeballs: @user.pokeballs - 1)
+    puts "Trowing pokeball..."
+    sleep(1)
     if catchy.caught? == true
-      puts "You've caught #{opponent_pokemon.name}! You now have #{@user.pokeballs} pokeballs."
+      puts "You've caught #{opponent_pokemon.name.colorize(:red)}! You now have #{@user.pokeballs} pokeballs."
+      sleep(1)
       if @user.pokemons.length == 6
         input = ""
         while input
-          puts "You have too many Pokemon and need to make room for #{opponent_pokemon.name}. Which Pokemon do you want to release?"
+          puts "You have too many Pokemon and need to make room for #{opponent_pokemon.name.colorize(:red)}. Which Pokemon do you want to release?"
           @user.pokemons.each.with_index(1) do |pokemon, idx|
-            puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})"
+            puts "#{idx}. #{pokemon.name.colorize(:blue)} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})"
           end
           input = gets.chomp
           range = (1..@user.pokemons.length).map {|num| num.to_s}
@@ -287,8 +294,9 @@ class CLI
         main_options
       end
     else
-      puts "You were not able to catch #{opponent_pokemon.name}. Try lowering it's HP some more."
+      puts "You were not able to catch #{opponent_pokemon.name.colorize(:red)}. Try lowering it's HP some more."
       puts "You now have #{@user.pokeballs} pokeballs."
+      sleep(1)
       battle(user_pokemon, opponent_pokemon, poke_battle)
     end
   end
@@ -322,7 +330,7 @@ class CLI
         puts "---------------------------------------------------------------------"
         puts "Which pokemon do you want for position #{count}?"
         @user.pokemons.where(slot: nil).each.with_index(1) do |pokemon, idx|
-          puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})"
+          puts "#{idx}. #{pokemon.name.colorize(:blue)} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})"
         end
         input = gets.chomp
         range = (1..@user.pokemons.where(slot: nil).length).map {|num| num.to_s}
@@ -340,7 +348,7 @@ class CLI
   def display_lineup
     puts "Your current lineup is:"
     @user.pokemons.order(:slot).each do |pokemon|
-      puts "#{pokemon.slot}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})"
+      puts "#{pokemon.slot}. #{pokemon.name.colorize(:blue)} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})"
     end
   end
 

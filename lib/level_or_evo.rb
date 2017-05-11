@@ -7,7 +7,8 @@ class LevelOrEvo
 
   def check_status
     if self.ready_for_level_up?
-      puts "Your #{self.pokemon.name} has leveled up!"
+      puts "--Your #{self.pokemon.name.colorize(:blue)} has leveled up!"
+      sleep(1)
       run_level_or_evo
     else
     end
@@ -23,7 +24,8 @@ class LevelOrEvo
         self.run_level_or_evo
       end
     else
-      puts "You now have a level #{self.pokemon.level} #{self.pokemon.name}."
+      puts "--Your #{self.pokemon.name.colorize(:blue)} is now level #{self.pokemon.level} ."
+      sleep(1)
     end
   end
 
@@ -54,7 +56,8 @@ class LevelOrEvo
     new_pokemon = Pokemon.create_from_number_and_level(number: new_pokemon_number, level: level)
     trainer = self.pokemon.trainer
     slot = self.pokemon.slot
-    puts "Your #{old_pokemon.name} has evolved into a #{new_pokemon.name}!!!"
+    puts "Your #{old_pokemon.name} has evolved into a #{new_pokemon.name.colorize(:blue)}!!!"
+    sleep(1)
     self.pokemon.destroy
     new_pokemon.update(slot: slot)
     trainer.reload

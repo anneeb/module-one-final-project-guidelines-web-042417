@@ -51,7 +51,8 @@ class BattlePokemon
 
 
   def user_attacks
-    puts "#{user_pkmn.name} attacks #{opp_pkmn.name} with #{@usr_atk_type.name} move"
+    puts "#{user_pkmn.name.colorize(:blue)} attacks #{opp_pkmn.name.colorize(:red)} with #{@usr_atk_type.name}"
+    sleep(1)
     #binding.pry
     dmg_calc = Damage.new(@user_pkmn, @opp_pkmn, @usr_atk_type)
     max_dmg_dealt = dmg_calc.damage.round(0)
@@ -61,33 +62,41 @@ class BattlePokemon
 
     #caluculates dmg to opponent based on types
     if opp_pkmn.hp > max_dmg_dealt
-      puts "#{opp_pkmn.name} received #{max_dmg_dealt} dmg"
+      puts "--#{opp_pkmn.name.colorize(:red)} received #{max_dmg_dealt} dmg"
+      sleep(1)
       opp_pkmn.take_damage(max_dmg_dealt)
-      puts "#{opp_pkmn.name} has #{opp_pkmn.hp} hp left"
+      puts "--#{opp_pkmn.name.colorize(:red)} has #{opp_pkmn.hp} hp left"
+      sleep(1)
     else
-      puts "#{opp_pkmn.name} received #{opp_pkmn.hp} dmg and fainted"
+      puts "--#{opp_pkmn.name.colorize(:red)} received #{opp_pkmn.hp} dmg"
+      sleep(1)
       dmg_dealt = opp_pkmn.hp
       opp_pkmn.take_damage(dmg_dealt)
-      puts "#{opp_pkmn.name} has #{opp_pkmn.hp} hp left"
+      puts "--#{opp_pkmn.name.colorize(:red)} has #{opp_pkmn.hp} hp left"
+      sleep(1)
     end
 
   end
 
   def opponent_attacks
-
-    puts "#{opp_pkmn.name} attacks #{user_pkmn.name} with #{@opp_atk_type.name} move"
+    sleep(1)
+    puts "#{opp_pkmn.name.colorize(:red)} attacks #{user_pkmn.name.colorize(:blue)} with #{@opp_atk_type.name}"
     dmg_calc = Damage.new(@opp_pkmn, @user_pkmn, @opp_atk_type)
     max_dmg_dealt = dmg_calc.damage.round(0)
 
     if user_pkmn.hp > max_dmg_dealt
-      puts "#{user_pkmn.name} received #{max_dmg_dealt} dmg"
+      puts "--#{user_pkmn.name.colorize(:blue)} received #{max_dmg_dealt} dmg"
+      sleep(1)
       user_pkmn.take_damage(max_dmg_dealt)
-      puts "#{user_pkmn.name} has #{user_pkmn.hp} hp left"
+      puts "--#{user_pkmn.name.colorize(:blue)} has #{user_pkmn.hp} hp left"
+      sleep(1)
     else
-      puts "#{user_pkmn.name} received #{user_pkmn.hp} dmg and fainted"
+      puts "--#{user_pkmn.name.colorize(:blue)} received #{user_pkmn.hp} dmg"
+      sleep(1)
       dmg_dealt = user_pkmn.hp
       user_pkmn.take_damage(dmg_dealt)
-      puts "#{user_pkmn.name} has #{user_pkmn.hp} hp left"
+      puts "--#{user_pkmn.name.colorize(:blue)} has #{user_pkmn.hp} hp left"
+      sleep(1)
     end
 
   end

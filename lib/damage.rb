@@ -14,7 +14,10 @@ class Damage
       total_type_multiplier = 1.0
     else
       #binding.pry
-      type_mods.each {|type_mod| puts "#{@atk_type.name} is #{type_mod[:effect]} against #{type_mod[:type].upcase}" }
+      type_mods.each do |type_mod|
+        sleep(1)
+        puts "--#{@atk_type.name} is #{type_mod[:effect]} against #{type_mod[:type].upcase}"
+      end
       type_multipliers = type_mods.collect {|mod| mod[:mult]}
       total_type_multiplier = type_multipliers.inject{|product, mult| product * mult}
     end

@@ -15,20 +15,60 @@ class CLI
   end
 
   def load_or_create_trainer
-    puts "Select a trainer to load or create a new one"
+    puts "Select a trainer to load or create a new one:"
     Trainer.all.each.with_index(1) {|trainer, idx| puts "#{idx}. #{trainer.name}" }
-    puts "#{Trainer.all.size + 1}. Create new game "
+    puts "#{Trainer.all.size + 1}. Create new game " if Trainer.all.size < 9
+    puts "0. Delete a trainer" if Trainer.all.size > 0
     input = gets.chomp
-
-    if input.to_i == Trainer.all.size + 1
+    if input.to_i == Trainer.all.size + 1 && Trainer.all.size < 9
       @user = create_trainer
     elsif input.to_i > 0 && input.to_i <= Trainer.all.size
       @user = Trainer.all[input.to_i - 1]
+    elsif input.to_i == 0 && Trainer.all.size > 0
+      delete_trainer
     else
       puts "Invalid input. Please try again."
       load_or_create_trainer
     end
   end
+
+  def delete_trainer
+    puts "Which trainer would you like to delete?"
+    Trainer.all.each.with_index(1) {|trainer, idx| puts "#{idx}. #{trainer.name}" }
+    puts "0. Cancel"
+    input = gets.chomp
+    if input.to_i > 0
+      confirm_delete_trainer(input)
+    elsif input.to_i == 0
+      load_or_create_trainer
+    else
+      puts "Invalid input. Please try again."
+      confirm_delete_trainer(first_input)
+    end
+  end
+
+  def confirm_delete_trainer(input)
+    first_input = input
+    puts "You are about to delete: #{Trainer.all[first_input.to_i - 1].name}. Once deleted, this action cannot be undone. Are you sure you want to delete #{Trainer.all[first_input.to_i - 1].name}?"
+    puts "1. Yes"
+    puts "2. No"
+    input = gets.chomp
+    if input.to_i == 1
+      name = Trainer.all[first_input.to_i - 1].name
+      id = Trainer.all[first_input.to_i - 1].id
+      Trainer.all[first_input.to_i - 1].destroy
+      Pokemon.all.where(trainer_id: id).destroy_all
+      puts "#{name} has retired and all of their has been released!"
+      load_or_create_trainer
+    elsif input.to_i == 2
+      puts "Delete cancelled."
+      load_or_create_trainer
+    else
+      puts "Invalid input. Please try again."
+      confirm_delete_trainer(first_input)
+    end
+  end
+
 
   def create_trainer
     puts "What would you like your trainer's name to be?"
@@ -40,7 +80,7 @@ class CLI
   end
 
   def main_options
-    puts "Would you like to battle or change your lineup"
+    puts "Hello, #{@user.name}! Would you like to battle or change your lineup?"
     puts "1. Battle"
     puts "2. View or edit lineup"
     puts "0. Exit the game"

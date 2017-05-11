@@ -61,7 +61,7 @@ class CLI
   def battle(user_pokemon = nil, opponent_pokemon = nil, poke_battle = nil)
     user_pokemon = user_pokemon
     opponent_pokemon = opponent_pokemon
-    opponent_pokemon = Pokemon.create_random_from_level(level: 1) unless opponent_pokemon
+    opponent_pokemon = Pokemon.create_random_from_trainer_levels(@user) unless opponent_pokemon
     ##testing defeating a pokemon
 
     ##if new no user pokemon given, select the first available in lineup

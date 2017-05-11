@@ -123,4 +123,10 @@ class Pokemon < ActiveRecord::Base
     end.minimum
   end
 
+  def self.create_random_from_trainer_levels(trainer)
+    avg_not_fainted = trainer.get_avg_lvl
+    range_around_avg = avg_not_fainted > 5 ? Range.new(avg_not_fainted - 5,avg_not_fainted + 5) : Range.new(1,avg_not_fainted + 5)
+    self.create_random_from_level(level: rand(range_around_avg))
+  end
+
 end

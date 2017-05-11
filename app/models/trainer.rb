@@ -23,4 +23,8 @@ class Trainer < ActiveRecord::Base
     self.pokemons << new_pokemon
   end
 
+  def get_avg_lvl
+    self.pokemons.where.not('hp = 0').average(:level).round(0).to_i
+  end
+
 end

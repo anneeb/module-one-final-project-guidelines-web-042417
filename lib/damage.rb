@@ -51,7 +51,7 @@ class Damage
             res << {type: d_type, effect: "not very effective", mult: 0.5}
           end
         when "electric"
-          case
+          case d_type
           when "water", "flying"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "electric", "grass", "dragon"
@@ -60,7 +60,7 @@ class Damage
             res << {type: d_type, effect: "no effect", mult: 0.0}
           end
         when "grass"
-          case
+          case d_type
           when "water", "ground", "rock"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "fire", "grass", "poison", "flying", "bug", "dragon"

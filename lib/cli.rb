@@ -26,6 +26,14 @@ class CLI
     end
   end
 
+  def create_trainer
+    puts "What would you like your trainer's name to be?"
+    name = gets.chomp
+    new_trainer = Trainer.create(name: name)
+    new_trainer.create_starters
+    new_trainer
+  end
+  
   def delete_trainer
     puts "Which trainer would you like to delete?"
     Trainer.all.each.with_index(1) {|trainer, idx| puts "#{idx}. #{trainer.name}" }
@@ -61,16 +69,6 @@ class CLI
       puts "Invalid input. Please try again."
       confirm_delete_trainer(first_input)
     end
-  end
-
-
-  def create_trainer
-    puts "What would you like your trainer's name to be?"
-    name = gets.chomp
-    new_trainer = Trainer.create(name: name)
-    new_trainer.create_starters
-    new_trainer
-
   end
 
   def main_options

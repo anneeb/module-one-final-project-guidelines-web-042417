@@ -19,7 +19,7 @@ class Damage
       total_type_multiplier = type_multipliers.inject{|product, mult| product * mult}
     end
     mods = random * total_type_multiplier * 3 # 4 represents STAB bonus
-    damage = (((4 * @atkr[:level] / 5) + 2) * (@atkr[:special_attack] / @defr[:special_defense]) * 50 / 50 + 2) * mods # 50 represents power of move which is constant since there are no specific moves
+    damage = (((4 * @atkr[:level] / 5) + 2) * (@atkr[:special_attack] / @defr[:special_defense]) * 30 / 50 + 2) * mods # 50 represents power of move which is constant since there are no specific moves
   end
 
   def type_resistance(atk_type, defer)

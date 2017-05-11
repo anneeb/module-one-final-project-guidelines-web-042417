@@ -10,6 +10,7 @@ class Pokemon < ActiveRecord::Base
     info = parse_info(resp)
     new_pokemon = self.new(info)
     new_pokemon.set_level_and_exp(level)
+    new_pokemon.set_hp
     parse = parse_types_and_evos(resp)
     new_pokemon.add_types_from_parse(parse)
     new_pokemon.save
@@ -21,11 +22,16 @@ class Pokemon < ActiveRecord::Base
     info = parse_info(resp)
     new_pokemon = self.new(info)
     new_pokemon.set_level_and_exp(level)
+    new_pokemon.set_hp
     parse = parse_types_and_evos(resp)
     new_pokemon.add_types_from_parse(parse)
     new_pokemon.add_evos_from_parse(parse)
     new_pokemon.save
     new_pokemon
+  end
+
+  def set_hp
+    self.hp = self.level_hp
   end
 
   def set_level_and_exp(level)
@@ -55,7 +61,6 @@ class Pokemon < ActiveRecord::Base
       when "name", "catch_rate", "attack", "defense", "growth_rate", "speed"
         info[k.to_sym] = v
       when  "hp"
-        info[k.to_sym] = v
         info[:base_hp] = v
       when "pkdx_id"
         info[:pokemon_number] = v
@@ -127,6 +132,10 @@ class Pokemon < ActiveRecord::Base
     avg_not_fainted = trainer.get_avg_lvl
     range_around_avg = avg_not_fainted > 5 ? Range.new(avg_not_fainted - 5,avg_not_fainted + 5) : Range.new(1,avg_not_fainted + 5)
     self.create_random_from_level(level: rand(range_around_avg))
+  end
+
+  def level_hp
+    hp = ((2 * self.base_hp + 100) * self.level) / 100 + 10
   end
 
 end

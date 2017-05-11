@@ -3,12 +3,14 @@ class CLI
   attr_reader :user
 
   def welcome
+    puts "---------------------------------------------------------------------"
     puts "Welcome message"
     load_or_create_trainer
     main_options
   end
 
   def load_or_create_trainer
+    puts "---------------------------------------------------------------------"
     puts "Select a trainer to load or create a new one:"
     Trainer.all.each.with_index(1) {|trainer, idx| puts "#{idx}. #{trainer.name}" }
     puts "#{Trainer.all.size + 1}. Create new game " if Trainer.all.size < 9
@@ -27,6 +29,7 @@ class CLI
   end
 
   def create_trainer
+    puts "---------------------------------------------------------------------"
     puts "What would you like your trainer's name to be?"
     name = gets.chomp
     if name == ""
@@ -40,6 +43,7 @@ class CLI
   end
 
   def delete_trainer
+    puts "---------------------------------------------------------------------"
     puts "Which trainer would you like to delete?"
     Trainer.all.each.with_index(1) {|trainer, idx| puts "#{idx}. #{trainer.name}" }
     puts "0. Cancel"
@@ -55,6 +59,7 @@ class CLI
   end
 
   def confirm_delete_trainer(input)
+    puts "---------------------------------------------------------------------"
     first_input = input
     puts "You are about to delete: #{Trainer.all[first_input.to_i - 1].name}. Once deleted, this action cannot be undone. Are you sure you want to delete #{Trainer.all[first_input.to_i - 1].name}?"
     puts "1. Yes"
@@ -77,6 +82,7 @@ class CLI
   end
 
   def main_options
+    puts "---------------------------------------------------------------------"
     puts "Would you like to battle or change your lineup?"
     puts "1. Battle"
     puts "2. View or edit lineup"
@@ -103,10 +109,11 @@ class CLI
 
     ##if new no user pokemon given, select the first available in lineup
     auto_select_next_to_battle(opponent_pokemon) unless user_pokemon
-
+    puts "---------------------------------------------------------------------"
     puts "You are battling #{opponent_pokemon.name} (lvl: #{opponent_pokemon.level}, hp: #{opponent_pokemon.hp}) with #{user_pokemon.name} (lvl: #{user_pokemon.level}, hp: #{user_pokemon.hp})!"
     ####
-    puts "What would you like to do"
+    puts "---------------------------------------------------------------------"
+    puts "What would you like to do?"
     puts "1. Attack #{opponent_pokemon.name}"
     puts "2. Switch to a different pokemon"
     puts "3. Try to catch pokemon"
@@ -140,7 +147,8 @@ class CLI
     opp_pkmn_types = opp_pkmn.types
 
     attack_types = []
-    puts "Choose which type of attack you want to use."
+    puts "---------------------------------------------------------------------"
+    puts "Choose which type of attack you want to use:"
     user_pkmn_types.each_with_index {|type, index| puts "#{index + 1}. #{type.name}"}
     user_choice = gets.chomp.to_i
     if user_choice > 0 && user_choice <= user_pkmn_types.size
@@ -148,6 +156,7 @@ class CLI
       attack_types << opp_pkmn_types.sample
       attack_types #shovels in a random choice fromn the opponents types
     else
+      puts "Invalid input. Please try again."
       choose_attack(user_pkmn, opp_pkmn)
     end
   end
@@ -211,6 +220,7 @@ class CLI
       puts "You don't have any other Pokemon to switch to!"
       battle(user_pokemon, opponent_pokemon)
     end
+    puts "---------------------------------------------------------------------"
     puts "Which pokemon would you like to switch to?"
     options.each.with_index(1) do |pokemon, idx|
       puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})" if pokemon != user_pokemon
@@ -284,7 +294,9 @@ class CLI
   end
 
   def view_or_edit_lineup
+    puts "---------------------------------------------------------------------"
     display_lineup
+    puts "---------------------------------------------------------------------"
     puts "Do you want to change your lineup?"
     puts "1. Yes"
     puts "2. No"
@@ -307,6 +319,7 @@ class CLI
     while count <= count_max
       input = ""
       while input
+        puts "---------------------------------------------------------------------"
         puts "Which pokemon do you want for position #{count}?"
         @user.pokemons.where(slot: nil).each.with_index(1) do |pokemon, idx|
           puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, lvl: #{pokemon.level}, hp: #{pokemon.hp})"

@@ -13,7 +13,7 @@ class GainXP
   end
 
   def give_exp_to_pkmn
-    pokemon = @trainer.not_fainted
+    pokemon = @trainer.pokemons
     exp_to_give = experience_gain
     pokemon.each do |pokemon|
       curr_exp = pokemon.experience

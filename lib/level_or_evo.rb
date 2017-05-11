@@ -37,6 +37,7 @@ class LevelOrEvo
 
   def level_up
     self.pokemon.update(level: self.pokemon.level + 1)
+    self.pokemon.update(hp: self.pokemon.level_hp)
   end
 
   def ready_for_evo?

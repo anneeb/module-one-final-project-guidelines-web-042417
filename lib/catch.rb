@@ -7,7 +7,7 @@ class Catch
   end
 
   def caught?
-    max_hp = self.desired_pokemon.base_hp
+    max_hp = self.desired_pokemon.level_hp
     hp = self.desired_pokemon.hp
     cr = self.desired_pokemon.catch_rate
     m = rand(0..255)

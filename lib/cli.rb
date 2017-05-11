@@ -173,6 +173,7 @@ class CLI
     options.each.with_index(1) do |pokemon, idx|
       puts "#{idx}. #{pokemon.name} (type: #{pokemon.list_types.join(", ")}, level: #{pokemon.level}, hp: #{pokemon.hp})" if pokemon != user_pokemon
     end
+    puts "0. Stick with #{user_pokemon.name} (type: #{user_pokemon.list_types.join(", ")}, level: #{user_pokemon.level}, hp: #{user_pokemon.hp})"
     input = gets.chomp
     range = (1..options.length).map {|num| num.to_s}
     if range.include?(input)
@@ -183,6 +184,9 @@ class CLI
       else
         battle(new_pokemon, opponent_pokemon)
       end
+    elsif input == "0"
+      puts "You have cancelled switching your attacker."
+      battle(user_pokemon, opponent_pokemon)
     else
       puts "Invalid input. Please try again"
       switch_pkmn(user_pokemon, opponent_pokemon)

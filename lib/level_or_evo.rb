@@ -7,7 +7,7 @@ class LevelOrEvo
 
   def check_status
     if self.ready_for_level_up?
-      puts "Your #{self.pokemon.name} is ready to level up!"
+      puts "Your #{self.pokemon.name} has leveled up!"
       run_level_or_evo
     else
     end

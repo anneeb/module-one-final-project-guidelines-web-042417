@@ -29,11 +29,16 @@ class CLI
   def create_trainer
     puts "What would you like your trainer's name to be?"
     name = gets.chomp
-    new_trainer = Trainer.create(name: name)
-    new_trainer.create_starters
-    new_trainer
+    if name == ""
+      puts "Your trainer cannot have no name!"
+      create_trainer
+    else
+      new_trainer = Trainer.create(name: name)
+      new_trainer.create_starters
+      new_trainer
+    end
   end
-  
+
   def delete_trainer
     puts "Which trainer would you like to delete?"
     Trainer.all.each.with_index(1) {|trainer, idx| puts "#{idx}. #{trainer.name}" }
@@ -187,6 +192,8 @@ class CLI
     not_fainted_pkmn = @user.not_fainted
     if not_fainted_pkmn.empty?
       puts "You lost all your pokemon. Game Over"
+      @user.pokemons.destroy_all
+      @user.destroy
       self.welcome
     else
       next_pkmn = not_fainted_pkmn.first

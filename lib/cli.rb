@@ -126,6 +126,7 @@ class CLI
       throw_pokeball(user_pokemon, opponent_pokemon, poke_battle)
     when "4"
       puts "You've run away"
+      opponent_pokemon.destroy
       main_options
     else
       battle(user_pokemon, opponent_pokemon)
@@ -171,7 +172,7 @@ class CLI
 
       ##create gain exp class to give exp to pokemon
       gain_experience = GainXP.new(@user, opponent_pokemon)
-
+      opponent_pokemon.destroy
       main_options
     when "Your pokemon fainted"
       puts "#{user_pokemon.name} fainted"
@@ -192,6 +193,7 @@ class CLI
     not_fainted_pkmn = @user.not_fainted
     if not_fainted_pkmn.empty?
       puts "You lost all your pokemon. Game Over"
+      opponent_pokemon.destroy
       @user.pokemons.destroy_all
       @user.destroy
       self.welcome
@@ -265,10 +267,12 @@ class CLI
         Pokemon.find(id).destroy
         catchy.add_caught_pokemon_with_replacement(slot)
         @user.reload
+        opponent_pokemon.destroy
         main_options
       else
         catchy.add_caught_pokemon_with_increment_slot
         @user.reload
+        opponent_pokemon.destroy
         main_options
       end
     else

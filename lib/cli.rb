@@ -129,6 +129,7 @@ class CLI
       opponent_pokemon.destroy
       main_options
     else
+      puts "Invalid input. Please try again."
       battle(user_pokemon, opponent_pokemon)
     end
 

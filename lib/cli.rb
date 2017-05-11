@@ -263,7 +263,7 @@ class CLI
     end
     catchy = Catch.new(user_pokemon, opponent_pokemon)
     @user.update(pokeballs: @user.pokeballs - 1)
-    puts "Trowing pokeball..."
+    puts "Throwing pokeball..."
     sleep(1)
     if catchy.caught? == true
       puts "You've caught #{opponent_pokemon.name.colorize(:red)}! You now have #{@user.pokeballs} pokeballs."

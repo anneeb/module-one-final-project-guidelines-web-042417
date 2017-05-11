@@ -80,7 +80,7 @@ class Pokemon < ActiveRecord::Base
       when "types"
         info[:types] = []
         v.each do |type|
-          info[:types] << type["name"]
+          info[:types] << type["name"].upcase
         end
       end
     end

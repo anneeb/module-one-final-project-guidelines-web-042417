@@ -21,8 +21,8 @@ class GainXP
       curr_exp = pokemon.experience
       new_exp = curr_exp + exp_to_give
       pokemon.update(experience: new_exp)
-      sleep(1)
       puts  "#{pokemon.name.colorize(:blue)} received #{exp_to_give} experience points"
+      sleep(0.5)
       pokemon.reload
       LevelOrEvo.new(pokemon).check_status
 

@@ -104,7 +104,7 @@ class CLI
     ##if new no user pokemon given, select the first available in lineup
     auto_select_next_to_battle(opponent_pokemon) unless user_pokemon
 
-    puts "You are battling #{opponent_pokemon.name} with #{user_pokemon.name}!"
+    puts "You are battling a level #{opponent_pokemon.level} #{opponent_pokemon.name} with #{user_pokemon.name}!"
     ####
     puts "What would you like to do"
     puts "1. Attack #{opponent_pokemon.name}"

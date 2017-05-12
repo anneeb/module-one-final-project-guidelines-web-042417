@@ -188,7 +188,7 @@ class CLI
     when "Your pokemon fainted"
       puts "#{user_pokemon.name.colorize(:blue)} fainted"
       sleep(0.5)
-      auto_select_next_to_battle(opponent_pokemon)
+      auto_select_next_to_battle(user_pokemon, opponent_pokemon)
     else
       puts "Error. Something went wrong"
       sleep(0.5)
@@ -202,17 +202,23 @@ class CLI
     #play_turn(poke_battle)
   end
 
-  def auto_select_next_to_battle(opponent_pokemon)
+  def auto_select_next_to_battle(user_pokemon, opponent_pokemon)
     not_fainted_pkmn = @user.not_fainted
     if not_fainted_pkmn.empty?
-      puts "You lost all your pokemon. Game Over"
+      puts "All your pokemon have fainted. Game Over."
       sleep(1)
       opponent_pokemon.destroy
       @user.pokemons.destroy_all
       @user.destroy
       self.welcome
     else
-      next_pkmn = not_fainted_pkmn.first
+      poke_loop = @user.pokemons.order(:slot) + @user.pokemons.order(:slot)
+      slot = user_pokemon.slot
+      next_pkmn = poke_loop[slot]
+      while next_pkmn.hp == 0
+        slot = next_pkmn[slot]
+        next_pkmn = poke_loop[slot]
+      end
       battle(next_pkmn, opponent_pokemon)
     end
   end

@@ -14,7 +14,8 @@ class Damage
       total_type_multiplier = 1.0
     else
       no_effect = nil
-      type_mods.each {|type| no_effect = true if type[:type][:effect] == "no effect"}
+      type_mods.each {|type| binding.pry
+        no_effect = true if type[:effect] == "no effect"}
       if no_effect
         puts "--#{@atk_type.name.colorize(@atk_type.color)} has #{type_mod[:effect]} against #{type_mod[:type].name.colorize(type_mod[:type].color)}"
         sleep(0.5)

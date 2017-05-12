@@ -30,7 +30,6 @@ ActiveRecord::Schema.define(version: 6) do
   create_table "pokemons", force: :cascade do |t|
     t.string  "name"
     t.integer "pokemon_number"
-    t.integer "catch_rate"
     t.integer "level"
     t.integer "experience"
     t.string  "growth_rate"

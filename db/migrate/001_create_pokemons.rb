@@ -4,8 +4,6 @@ class CreatePokemons < ActiveRecord::Migration
       t.string :name
       t.integer :pokemon_number
 
-      t.integer :catch_rate
-
       t.integer :level
       t.integer :experience
       t.string :growth_rate

@@ -13,10 +13,16 @@ class Damage
     if type_mods.empty?
       total_type_multiplier = 1.0
     else
-      #binding.pry
-      type_mods.each do |type_mod|
-        puts "--#{@atk_type.name} is #{type_mod[:effect]} against #{type_mod[:type].upcase}"
+      no_effect = nil
+      type_mods.each {|type| no_effect = true if type[:effect] == "no effect"}
+      if no_effect
+        puts "--#{@atk_type.name} has #{type_mod[:effect]} against #{type_mod[:type].upcase}"
         sleep(0.5)
+      else
+        type_mods.each do |type_mod|
+          puts "--#{@atk_type.name} is #{type_mod[:effect]} against #{type_mod[:type].upcase}"
+          sleep(0.5)
+        end
       end
       type_multipliers = type_mods.collect {|mod| mod[:mult]}
       total_type_multiplier = type_multipliers.inject{|product, mult| product * mult}

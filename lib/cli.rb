@@ -114,7 +114,7 @@ class CLI
     user_pokemon = @user.not_fainted.first unless user_pokemon
 
     puts "---------------------------------------------------------------------"
-    puts "You are battling #{opponent_pokemon.name.colorize(:red)} (lvl: #{opponent_pokemon.level}, hp: #{opponent_pokemon.hp}) with #{user_pokemon.name.colorize(:blue)} (lvl: #{user_pokemon.level}, hp: #{user_pokemon.hp})!"
+    puts "You are battling #{opponent_pokemon.name.colorize(:red)} (lvl: #{opponent_pokemon.level}, hp: #{opponent_pokemon.hp}) with #{user_pokemon.name.colorize(:blue)} (lvl: #{user_pokemon.level}, hp: #{user_pokemon.hp})"
     ####
     puts "---------------------------------------------------------------------"
     sleep(0.5)

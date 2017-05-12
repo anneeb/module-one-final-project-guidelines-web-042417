@@ -220,7 +220,7 @@ class CLI
       slot = user_pokemon.slot
       next_pkmn = poke_loop[slot]
       while next_pkmn.hp == 0
-        slot = next_pkmn[slot]
+        slot = next_pkmn.slot
         next_pkmn = poke_loop[slot]
       end
       battle(next_pkmn, opponent_pokemon)

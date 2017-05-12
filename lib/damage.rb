@@ -16,6 +16,7 @@ class Damage
       no_effect = nil
       type_mods.each {|type| no_effect = true if type[:effect] == "no effect"}
       if no_effect
+        type_mod = type_mods.find {|type| type[:effect] == "no effect"}
         puts "--#{@atk_type.name.colorize(@atk_type.color)} has #{type_mod[:effect]} against #{type_mod[:type].name.colorize(type_mod[:type].color)}"
         sleep(0.5)
       else

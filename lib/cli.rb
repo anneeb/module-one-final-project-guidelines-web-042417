@@ -154,7 +154,7 @@ class CLI
     attack_types = []
     puts "---------------------------------------------------------------------"
     puts "Choose which type of attack you want to use:"
-    user_pkmn_types.each_with_index {|type, index| puts "#{index + 1}. #{type.name}"}
+    user_pkmn_types.each_with_index {|type, index| puts "#{index + 1}. #{type.name.colorize(type.color)}"}
     user_choice = gets.chomp.to_i
     if user_choice > 0 && user_choice <= user_pkmn_types.size
       attack_types << user_pkmn_types[user_choice - 1]

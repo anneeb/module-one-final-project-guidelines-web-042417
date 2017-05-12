@@ -14,13 +14,13 @@ class Damage
       total_type_multiplier = 1.0
     else
       no_effect = nil
-      type_mods.each {|type| no_effect = true if type[:effect] == "no effect"}
+      type_mods.each {|type| no_effect = true if type[:type][:effect] == "no effect"}
       if no_effect
-        puts "--#{@atk_type.name} has #{type_mod[:effect]} against #{type_mod[:type].upcase}"
+        puts "--#{@atk_type.name.colorize(@atk_type.color)} has #{type_mod[:effect]} against #{type_mod[:type].name.colorize(type_mod[:type].color)}"
         sleep(0.5)
       else
         type_mods.each do |type_mod|
-          puts "--#{@atk_type.name} is #{type_mod[:effect]} against #{type_mod[:type].upcase}"
+          puts "--#{@atk_type.name.colorize(@atk_type.color)} is #{type_mod[:effect]} against #{type_mod[:type].name.colorize(type_mod[:type].color)}"
           sleep(0.5)
         end
       end
@@ -35,32 +35,32 @@ class Damage
     #binding.pry
     res = []
     a_type = atk_type.name.downcase
-    defer_types = defer.types.collect {|defer_type| defer_type.name.downcase}
+    defer_types = defer.types
       defer_types.each do |d_type|
         case a_type
         when "normal"
-          case d_type
+          case d_type.name.downcase
           when "rock"
             res << {type: d_type, effect: "not very effective", mult: 0.5}
           when "ghost"
             res << {type: d_type, effect: "no effect", mult: 0.0}
           end
         when "fire"
-          case d_type
+          case d_type.name.downcase
           when "grass", "ice", "bug"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "fire", "water", "rock", "dragon"
             res << {type: d_type, effect: "not very effective", mult: 0.5}
           end
         when "water"
-          case d_type
+          case d_type.name.downcase
           when "fire", "ground", "rock"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "water", "grass", "dragon"
             res << {type: d_type, effect: "not very effective", mult: 0.5}
           end
         when "electric"
-          case d_type
+          case d_type.name.downcase
           when "water", "flying"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "electric", "grass", "dragon"
@@ -69,21 +69,21 @@ class Damage
             res << {type: d_type, effect: "no effect", mult: 0.0}
           end
         when "grass"
-          case d_type
+          case d_type.name.downcase
           when "water", "ground", "rock"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "fire", "grass", "poison", "flying", "bug", "dragon"
             res << {type: d_type, effect: "not very effective", mult: 0.5}
           end
         when "ice"
-          case d_type
+          case d_type.name.downcase
           when "grass", "ground", "flying", "dragon"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "water", "ice"
             res << {type: d_type, effect: "not very effective", mult: 0.5}
           end
         when "fighting"
-          case d_type
+          case d_type.name.downcase
           when "normal", "ice", "rock"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "poison", "flying", "psychic", "bug", "rock"
@@ -92,14 +92,14 @@ class Damage
             res << {type: d_type, effect: "no effect", mult: 0.0}
           end
         when "poison"
-          case d_type
+          case d_type.name.downcase
           when "grass", "bug"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "poison", "ground", "rock", "ghost"
             res << {type: d_type, effect: "not very effective", mult: 0.5}
           end
         when "ground"
-          case d_type
+          case d_type.name.downcase
           when "fire", "electric", "poison", "rock"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "grass", "bug"
@@ -108,42 +108,42 @@ class Damage
             res << {type: d_type, effect: "no effect", mult: 0.0}
           end
         when "flying"
-          case d_type
+          case d_type.name.downcase
           when "grass", "fighting", "bug"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "electric", "rock"
             res << {type: d_type, effect: "not very effective", mult: 0.5}
           end
         when "psychic"
-          case d_type
+          case d_type.name.downcase
           when "fighting", "poison"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "psychic"
             res << {type: d_type, effect: "not very effective", mult: 0.5}
           end
         when "bug"
-          case d_type
+          case d_type.name.downcase
           when "grass", "poison", "psychic"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "fire", "fighting", "flying"
             res << {type: d_type, effect: "not very effective", mult: 0.5}
           end
         when "rock"
-          case d_type
+          case d_type.name.downcase
           when "fire", "ice", "flying", "bug"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "fighing", "ground"
             res << {type: d_type, effect: "not very effective", mult: 0.5}
           end
         when "ghost"
-          case d_type
+          case d_type.name.downcase
           when "ghost"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           when "normal", "psychic"
             res << {type: d_type, effect: "no effect", mult: 0.0}
           end
         when "dragon"
-          case d_type
+          case d_type.name.downcase
           when "dragon"
             res << {type: d_type, effect: "super effective", mult: 2.0}
           end

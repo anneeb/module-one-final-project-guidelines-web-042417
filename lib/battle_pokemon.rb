@@ -52,7 +52,7 @@ class BattlePokemon
 
   def user_attacks
     sleep(0.5)
-    puts "#{user_pkmn.name.colorize(:blue)} attacks #{opp_pkmn.name.colorize(:red)} with #{@usr_atk_type.name}"
+    puts "#{user_pkmn.name.colorize(:blue)} attacks #{opp_pkmn.name.colorize(:red)} with #{@usr_atk_type.name.colorize(@usr_atk_type.color)}"
     sleep(0.5)
     #binding.pry
     dmg_calc = Damage.new(@user_pkmn, @opp_pkmn, @usr_atk_type)
@@ -81,7 +81,7 @@ class BattlePokemon
 
   def opponent_attacks
     sleep(0.5)
-    puts "#{opp_pkmn.name.colorize(:red)} attacks #{user_pkmn.name.colorize(:blue)} with #{@opp_atk_type.name}"
+    puts "#{opp_pkmn.name.colorize(:red)} attacks #{user_pkmn.name.colorize(:blue)} with #{@opp_atk_type.name.colorize(@opp_atk_type.color)}"
     sleep(0.5)
     dmg_calc = Damage.new(@opp_pkmn, @user_pkmn, @opp_atk_type)
     max_dmg_dealt = dmg_calc.damage.round(0)

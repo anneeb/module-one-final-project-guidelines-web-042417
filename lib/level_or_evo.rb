@@ -56,14 +56,16 @@ class LevelOrEvo
     new_pokemon = Pokemon.create_from_number_and_level(number: new_pokemon_number, level: level)
     trainer = self.pokemon.trainer
     slot = self.pokemon.slot
-    puts "Your #{old_pokemon.name} has evolved into a #{new_pokemon.name.colorize(:blue)}!!!"
+    puts "!!!Your #{old_pokemon.name.colorize(:blue)} has evolved into a #{new_pokemon.name.colorize(:blue)}!!!"
     sleep (0.5)
-    puts "To celebrate, you buy 10 more pokeballs!!!!!"
+    puts "--To celebrate, you buy 10 more pokeballs!!!"
     sleep(0.5)
     self.pokemon.destroy
     new_pokemon.update(slot: slot)
     trainer.update(pokeballs: trainer.pokeballs + 10)
     trainer.reload
+    puts "--You now have #{trainer.pokeballs} pokeballs."
+    sleep(0.5)
     trainer.pokemons << new_pokemon
     self.pokemon = new_pokemon
     self.pokemon.update(experience: old_pokemon_exp)

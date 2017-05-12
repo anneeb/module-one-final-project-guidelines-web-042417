@@ -94,6 +94,9 @@ class CLI
     when "2"
       view_or_edit_lineup
     when "0"
+      puts "---------------------------------------------------------------------"
+      puts "Goodbye!"
+      puts "---------------------------------------------------------------------"
       exit
     else
       puts "Invalid input. Please try again"

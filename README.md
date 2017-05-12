@@ -25,3 +25,4 @@ This game was made as a project and for fun. Please feel free to fork the repo a
 
 
 # ------------ LICENSE ----------- #
+https://github.com/anneeb/module-one-final-project-guidelines-web-042417/blob/demodemo/LICENSE.md

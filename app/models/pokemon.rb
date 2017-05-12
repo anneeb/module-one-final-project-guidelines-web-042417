@@ -111,7 +111,7 @@ class Pokemon < ActiveRecord::Base
 
   def list_types
     self.types.map do |type|
-      type.name
+      type.name.colorize(type.color)
     end
   end
 

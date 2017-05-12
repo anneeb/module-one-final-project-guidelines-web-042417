@@ -108,7 +108,8 @@ class CLI
     ##testing defeating a pokemon
 
     ##if new no user pokemon given, select the first available in lineup
-    auto_select_next_to_battle(opponent_pokemon) unless user_pokemon
+    user_pokemon = @user.not_fainted.first unless user_pokemon
+
     puts "---------------------------------------------------------------------"
     puts "You are battling #{opponent_pokemon.name.colorize(:red)} (lvl: #{opponent_pokemon.level}, hp: #{opponent_pokemon.hp}) with #{user_pokemon.name.colorize(:blue)} (lvl: #{user_pokemon.level}, hp: #{user_pokemon.hp})!"
     ####
